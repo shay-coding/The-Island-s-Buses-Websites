@@ -1,0 +1,89 @@
+{
+  "route": {
+    "id": "SL",
+    "name": "Route SL",
+    "length": 37,
+    "color": "#84368c"
+  },
+  "directions": [
+    {
+      "name": "Newport to Yarmouth",
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698248078, "lon": -1.294536462},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Carisbrooke High Street", "lat": 50.691456640, "lon": -1.312111216},
+        {"name": "The Waverley", "lat": 50.691716714, "lon": -1.315979451},
+        {"name": "Nodgham Lane", "lat": 50.691273578, "lon": -1.317873051},
+        {"name": "Alvington Shute", "lat": 50.691384160, "lon": -1.324511201},
+        {"name": "Alvington Manor Farm", "lat": 50.691990191, "lon": -1.330766458},
+        {"name": "Alvington View", "lat": 50.691906845, "lon": -1.334415016},
+        {"name": "Blacksmiths Arms", "lat": 50.689037877, "lon": -1.343668105},
+        {"name": "Apes Down Farm", "lat": 50.686687352, "lon": -1.355848849},
+        {"name": "Swainston Manor", "lat": 50.685698832, "lon": -1.373254843},
+        {"name": "Pump Lane", "lat": 50.683000730, "lon": -1.385935588},
+        {"name": "Little Shillings", "lat": 50.680763977, "lon": -1.395009186},
+        {"name": "Calbourne, Sun Inn", "lat": 50.679576856, "lon": -1.400218836},
+        {"name": "Calbourne Cross", "lat": 50.680114797, "lon": -1.406350353},
+        {"name": "Calbourne Mill", "lat": 50.679053877, "lon": -1.414095929},
+        {"name": "Chessell Crossroads", "lat": 50.671228658, "lon": -1.439410620},
+        {"name": "Broad Lane Shalcombe", "lat": 50.671871486, "lon": -1.449761735},
+        {"name": "Tapnell Farm", "lat": 50.679452301, "lon": -1.469134331},
+        {"name": "Tapnell Farm Park", "lat": 50.679452301, "lon": -1.469134331},
+        {"name": "Tapnell Farm", "lat": 50.674885158, "lon": -1.471379416},
+        {"name": "East Afton Farm", "lat": 50.675658140, "lon": -1.487405457},
+        {"name": "Afton Marsh", "lat": 50.676862511, "lon": -1.495501901},
+        {"name": "Freshwater Fruit Farm", "lat": 50.680449246, "lon": -1.496074066},
+        {"name": "Thorley Cross", "lat": 50.698828245, "lon": -1.482050715},
+        {"name": "Old Toll Gate", "lat": 50.705277614, "lon": -1.486367315},
+        {"name": "Mountfield", "lat": 50.705438358, "lon": -1.494778424},
+        {"name": "Sixpenny Corner", "lat": 50.704623777, "lon": -1.497710743},
+        {"name": "Yarmouth Bus Station", "lat": 50.705340553, "lon": -1.501285916}
+      ],
+      "departures": [
+        "10:00", "12:00", "14:00", "16:00"
+      ]
+    },
+    {
+      "name": "Yarmouth to Newport",
+      "stops": [
+        {"name": "Yarmouth Bus Station", "lat": 50.705340553, "lon": -1.501285916},
+        {"name": "Sixpenny Corner", "lat": 50.704623777, "lon": -1.497710743},
+        {"name": "Mountfield", "lat": 50.705438358, "lon": -1.494778424},
+        {"name": "Old Toll Gate", "lat": 50.705277614, "lon": -1.486367315},
+        {"name": "Thorley Cross", "lat": 50.698828245, "lon": -1.482050715},
+        {"name": "Freshwater Fruit Farm", "lat": 50.680449246, "lon": -1.496074066},
+        {"name": "Afton Marsh", "lat": 50.676862511, "lon": -1.495501901},
+        {"name": "East Afton Farm", "lat": 50.675658140, "lon": -1.487405457},
+        {"name": "Tapnell Farm", "lat": 50.674885158, "lon": -1.471379416},
+        {"name": "Tapnell Farm Park", "lat": 50.679452301, "lon": -1.469134331},
+        {"name": "Broad Lane Shalcombe", "lat": 50.671871486, "lon": -1.449761735},
+        {"name": "Chessell Crossroads", "lat": 50.671228658, "lon": -1.439410620},
+        {"name": "Calbourne Mill", "lat": 50.679053877, "lon": -1.414095929},
+        {"name": "Calbourne Cross", "lat": 50.680114797, "lon": -1.406350353},
+        {"name": "Calbourne, Sun Inn", "lat": 50.679576856, "lon": -1.400218836},
+        {"name": "Little Shillings", "lat": 50.680763977, "lon": -1.395009186},
+        {"name": "Pump Lane", "lat": 50.683000730, "lon": -1.385935588},
+        {"name": "Swainston Manor", "lat": 50.685698832, "lon": -1.373254843},
+        {"name": "Apes Down Farm", "lat": 50.686687352, "lon": -1.355848849},
+        {"name": "Blacksmiths Arms", "lat": 50.689037877, "lon": -1.343668105},
+        {"name": "Alvington View", "lat": 50.691906845, "lon": -1.334415016},
+        {"name": "Alvington Manor Farm", "lat": 50.691990191, "lon": -1.330766458},
+        {"name": "Alvington Shute", "lat": 50.691384160, "lon": -1.324511201},
+        {"name": "Nodgham Lane", "lat": 50.691273578, "lon": -1.317873051},
+        {"name": "The Waverley", "lat": 50.691716714, "lon": -1.315979451},
+        {"name": "Carisbrooke High Street", "lat": 50.691456640, "lon": -1.312111216},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Newport Bus Station", "lat": 50.698248078, "lon": -1.294536462}
+      ],
+      "departures": [
+        "11:15", "13:15", "15:15", "17:15"
+      ]
+    }
+  ]
+}

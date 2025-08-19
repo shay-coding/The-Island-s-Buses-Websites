@@ -1,0 +1,60 @@
+{
+  "route": {
+    "id": "TNB",
+    "name": "Route TNB",
+    "length": 80,
+    "color": "#f7951e",
+    "type": "circular"
+  },
+  "directions": [
+    {
+      "stops": [
+        {"name": "Yarmouth Bus Station", "lat": 50.705401864, "lon": -1.500902908},
+        {"name": "Sixpenny Corner", "lat": 50.704795242, "lon": -1.497850525},
+        {"name": "Mountfield", "lat": 50.705498473, "lon": -1.494850710},
+        {"name": "Old Toll Gate", "lat": 50.705843182, "lon": -1.486717585},
+        {"name": "Thorley Cross", "lat": 50.698519796, "lon": -1.481747562},
+        {"name": "Freshwater Fruit Farm", "lat": 50.680514705, "lon": -1.495759998},
+        {"name": "Afton Barns", "lat": 50.677423140, "lon": -1.504610404},
+        {"name": "The Apple Farm", "lat": 50.676947625, "lon": -1.506993081},
+        {"name": "Afton Corner", "lat": 50.675353606, "lon": -1.508580680},
+        {"name": "Freshwater Bay", "lat": 50.670874440, "lon": -1.512688753},
+        {"name": "St Agnes Church", "lat": 50.673014138, "lon": -1.516869648},
+        {"name": "Farringford", "lat": 50.675896306, "lon": -1.526732674},
+        {"name": "Freshwater Sainsbury's", "lat": 50.682580228, "lon": -1.525080180},
+        {"name": "Freshwater Fire Station", "lat": 50.683659689, "lon": -1.529598836},
+        {"name": "The Avenue", "lat": 50.683997854, "lon": -1.535441443},
+        {"name": "Coastguard Cottages Totland", "lat": 50.683263395, "lon": -1.538449489},
+        {"name": "Totland, War Memorial", "lat": 50.680374873, "lon": -1.540261189},
+        {"name": "Heatherwood Park Road", "lat": 50.677073705, "lon": -1.544638344},
+        {"name": "Christ Church", "lat": 50.675961787, "lon": -1.545455789},
+        {"name": "Headon Rise", "lat": 50.673196140, "lon": -1.548836430},
+        {"name": "The Golf House", "lat": 50.669620747, "lon": -1.554488466},
+        {"name": "Needles Landmark Attraction", "lat": 50.667846377, "lon": -1.565669648},
+        {"name": "Top Car Park", "lat": 50.666533789, "lon": -1.565766648},
+        {"name": "Needles Battery", "lat": 50.662191188, "lon": -1.578271377},
+        {"name": "Old Battery", "lat": 50.663069182, "lon": -1.579848164},
+        {"name": "Top Car Park", "lat": 50.666533789, "lon": -1.565766648},
+        {"name": "Needles Landmark Attraction", "lat": 50.668017024, "lon": -1.565611474},
+        {"name": "The Golf House", "lat": 50.670016006, "lon": -1.553953934},
+        {"name": "Headon Rise", "lat": 50.673358442, "lon": -1.548948089},
+        {"name": "Christ Church", "lat": 50.676105887, "lon": -1.545511008},
+        {"name": "Totland, War Memorial", "lat": 50.680555670, "lon": -1.540500040},
+        {"name": "Coastguard Cottages Totland", "lat": 50.683873816, "lon": -1.538174561},
+        {"name": "Colwell Common", "lat": 50.686456585, "lon": -1.534114856},
+        {"name": "Brambles Corner", "lat": 50.690372653, "lon": -1.530678450},
+        {"name": "Monks Lane", "lat": 50.691370020, "lon": -1.526024958},
+        {"name": "Hill Farm", "lat": 50.695274415, "lon": -1.521992984},
+        {"name": "Pixley Hill", "lat": 50.697504795, "lon": -1.517665990},
+        {"name": "Westhill Lane", "lat": 50.702055873, "lon": -1.513512822},
+        {"name": "Norton Grange", "lat": 50.704822432, "lon": -1.510595325},
+        {"name": "Yarmouth Bus Station", "lat": 50.705401864, "lon": -1.500902908}
+      ],
+      "departures": [
+        "09:55", "10:25", "10:55", "11:25", "11:55",
+        "12:25", "12:55", "13:25", "13:55", "14:25",
+        "14:55", "15:25", "15:55", "16:25", "16:55"
+      ]
+    }
+  ]
+}

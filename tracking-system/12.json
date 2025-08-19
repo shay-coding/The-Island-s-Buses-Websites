@@ -1,0 +1,90 @@
+{
+  "route": {
+    "id": "12",
+    "name": "Route 12",
+    "length": 29,
+    "color": "#61453c"
+  },
+  "directions": [
+    {
+      "name": "Newport to Hulverstone",
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698248078, "lon": -1.294536462},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Carisbrooke High Street", "lat": 50.691456640, "lon": -1.312111216},
+        {"name": "The Waverley", "lat": 50.691198040, "lon": -1.315846977},
+        {"name": "Clatterford Shute", "lat": 50.688155578, "lon": -1.319843503},
+        {"name": "Bowcombe Barn Farm", "lat": 50.686230030, "lon": -1.322578044},
+        {"name": "Plaish Lane", "lat": 50.682795584, "lon": -1.330678508},
+        {"name": "White Lane", "lat": 50.681153974, "lon": -1.335085964},
+        {"name": "Bowcombe", "lat": 50.678362646, "lon": -1.338653248},
+        {"name": "Idlecombe Farm", "lat": 50.673274241, "lon": -1.342107001},
+        {"name": "Rainsgrove Cottages", "lat": 50.667070227, "lon": -1.343891662},
+        {"name": "Rowborough Farm", "lat": 50.662498085, "lon": -1.348030134},
+        {"name": "Cheverton Farm", "lat": 50.657380003, "lon": -1.351276969},
+        {"name": "North of Shorwell", "lat": 50.653419634, "lon": -1.353658484},
+        {"name": "Northcourt", "lat": 50.646781346, "lon": -1.353381786},
+        {"name": "Shorwell Crown Inn", "lat": 50.644214906, "lon": -1.356005174},
+        {"name": "Westcourt Farm", "lat": 50.643026840, "lon": -1.363189491},
+        {"name": "Yard's Hollow", "lat": 50.641857942, "lon": -1.370674703},
+        {"name": "Short Lane", "lat": 50.642126402, "lon": -1.373768309},
+        {"name": "Limerstone Farm", "lat": 50.641770232, "lon": -1.377789457},
+        {"name": "Brighstone Cemetery", "lat": 50.642279991, "lon": -1.384471972},
+        {"name": "Brighstone, Three Bishops", "lat": 50.642716915, "lon": -1.395342060},
+        {"name": "Moortown Lane", "lat": 50.644675898, "lon": -1.400281184},
+        {"name": "Galley Lane", "lat": 50.645213383, "lon": -1.405139652},
+        {"name": "Grammars Hill", "lat": 50.648191587, "lon": -1.412541924},
+        {"name": "Brighstone Grange", "lat": 50.650110002, "lon": -1.418094031},
+        {"name": "Mottistone Manor", "lat": 50.651726952, "lon": -1.426887988},
+        {"name": "Mottistone Estate", "lat": 50.652851370, "lon": -1.430972155},
+        {"name": "Sun Inn Hulverstone", "lat": 50.654452014, "lon": -1.438522965}
+      ],
+      "departures": [
+        "08:28", "09:30", "10:40", "13:20", "15:40", "17:40", "20:55", "23:10"
+      ]
+    },
+    {
+      "name": "Hulverstone to Newport",
+      "stops": [
+        {"name": "Sun Inn Hulverstone", "lat": 50.654452014, "lon": -1.438522965},
+        {"name": "Mottistone Estate", "lat": 50.652851370, "lon": -1.430972155},
+        {"name": "Mottistone Manor", "lat": 50.651726952, "lon": -1.426887988},
+        {"name": "Brighstone Grange", "lat": 50.650110002, "lon": -1.418094031},
+        {"name": "Grammars Hill", "lat": 50.648191587, "lon": -1.412541924},
+        {"name": "Galley Lane", "lat": 50.645213383, "lon": -1.405139652},
+        {"name": "Moortown Lane", "lat": 50.644675898, "lon": -1.400281184},
+        {"name": "Brighstone, Three Bishops", "lat": 50.642716915, "lon": -1.395342060},
+        {"name": "Brighstone Cemetery", "lat": 50.642279991, "lon": -1.384471972},
+        {"name": "Limerstone Farm", "lat": 50.641770232, "lon": -1.377789457},
+        {"name": "Short Lane", "lat": 50.642126402, "lon": -1.373768309},
+        {"name": "Yard's Hollow", "lat": 50.641857942, "lon": -1.370674703},
+        {"name": "Westcourt Farm", "lat": 50.643026840, "lon": -1.363189491},
+        {"name": "Shorwell Crown Inn", "lat": 50.644214906, "lon": -1.356005174},
+        {"name": "Northcourt", "lat": 50.646781346, "lon": -1.353381786},
+        {"name": "North of Shorwell", "lat": 50.653419634, "lon": -1.353658484},
+        {"name": "Cheverton Farm", "lat": 50.657380003, "lon": -1.351276969},
+        {"name": "Rowborough Farm", "lat": 50.662498085, "lon": -1.348030134},
+        {"name": "Rainsgrove Cottages", "lat": 50.667070227, "lon": -1.343891662},
+        {"name": "Idlecombe Farm", "lat": 50.673274241, "lon": -1.342107001},
+        {"name": "Bowcombe", "lat": 50.678362646, "lon": -1.338653248},
+        {"name": "White Lane", "lat": 50.681153974, "lon": -1.335085964},
+        {"name": "Plaish Lane", "lat": 50.682795584, "lon": -1.330678508},
+        {"name": "Bowcombe Barn Farm", "lat": 50.686230030, "lon": -1.322578044},
+        {"name": "Clatterford Shute", "lat": 50.688155578, "lon": -1.319843503},
+        {"name": "The Waverley", "lat": 50.691198040, "lon": -1.315846977},
+        {"name": "Carisbrooke High Street", "lat": 50.691456640, "lon": -1.312111216},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Newport Bus Station", "lat": 50.698248078, "lon": -1.294536462}
+      ],
+      "departures": [
+        "07:46", "09:51", "11:01", "12:11", "14:51", "17:11", "19:15", "21:58"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "route": {
+    "id": "4",
+    "name": "Route 4",
+    "length": 30,
+    "color": "#832990"
+  },
+  "directions": [
+    {
+      "name": "Ryde to East Cowes",
+      "stops": [
+        {"name": "Ryde Transport Interchange", "lat": 50.732771227, "lon": -1.160099561},
+        {"name": "Belvedere Street", "lat": 50.729485182, "lon": -1.158344692},
+        {"name": "Cross Street", "lat": 50.729918467, "lon": -1.162318411},
+        {"name": "John Street", "lat": 50.727869270, "lon": -1.164990257},
+        {"name": "Parish Church", "lat": 50.727525908, "lon": -1.167277447},
+        {"name": "St Vincents", "lat": 50.728206988, "lon": -1.174533790},
+        {"name": "Binstead, Ringwood Road", "lat": 50.727829718, "lon": -1.180972840},
+        {"name": "Binstead, Binstead Arms", "lat": 50.727284902, "lon": -1.185360298},
+        {"name": "Binstead, Newnham Road", "lat": 50.727046679, "lon": -1.191187511},
+        {"name": "Quarr Abbey", "lat": 50.727639578, "lon": -1.204169599},
+        {"name": "Fishbourne Lane", "lat": 50.726368039, "lon": -1.214511007},
+        {"name": "Kite Hill", "lat": 50.725525992, "lon": -1.222004020},
+        {"name": "Wootton Bridge", "lat": 50.724743326, "lon": -1.226815606},
+        {"name": "Wootton Tesco", "lat": 50.725071792, "lon": -1.231612972},
+        {"name": "Wootton, Cedars", "lat": 50.724571604, "lon": -1.236239693},
+        {"name": "Lushington Garage", "lat": 50.724340567, "lon": -1.239416908},
+        {"name": "Westwood House Lodge", "lat": 50.724401888, "lon": -1.248879639},
+        {"name": "Crematorium", "lat": 50.724440583, "lon": -1.257733556},
+        {"name": "Alverstone Road", "lat": 50.727558674, "lon": -1.263025713},
+        {"name": "Whippingham Forge", "lat": 50.738215928, "lon": -1.268867199},
+        {"name": "Whippingham, Campfield Road", "lat": 50.739288273, "lon": -1.269218972},
+        {"name": "CECAMM", "lat": 50.743305183, "lon": -1.271636735},
+        {"name": "Osborne House", "lat": 50.749520460, "lon": -1.276175491},
+        {"name": "Osborne Cottage", "lat": 50.752101721, "lon": -1.277680837},
+        {"name": "Connaught Road", "lat": 50.754675962, "lon": -1.280601964},
+        {"name": "John Nash Avenue", "lat": 50.756040102, "lon": -1.284907103},
+        {"name": "East Cowes Waitrose", "lat": 50.758435204, "lon": -1.288344104}
+      ],
+      "departures": [
+        "06:35", "08:45", "09:55", "11:05", "12:15", "13:25",
+        "14:35", "15:45", "16:55", "18:05", "19:15", "20:25",
+        "21:35", "22:45"
+      ]
+    },
+    {
+      "name": "East Cowes to Ryde",
+      "stops": [
+        {"name": "East Cowes Waitrose", "lat": 50.758435204, "lon": -1.288344104},
+        {"name": "John Nash Avenue", "lat": 50.756040102, "lon": -1.284907103},
+        {"name": "Connaught Road", "lat": 50.754675962, "lon": -1.280601964},
+        {"name": "Osborne Cottage", "lat": 50.752101721, "lon": -1.277680837},
+        {"name": "Osborne House", "lat": 50.749520460, "lon": -1.276175491},
+        {"name": "CECAMM", "lat": 50.743305183, "lon": -1.271636735},
+        {"name": "Whippingham, Campfield Road", "lat": 50.739288273, "lon": -1.269218972},
+        {"name": "Whippingham Forge", "lat": 50.738215928, "lon": -1.268867199},
+        {"name": "Alverstone Road", "lat": 50.727558674, "lon": -1.263025713},
+        {"name": "Crematorium", "lat": 50.724440583, "lon": -1.257733556},
+        {"name": "Westwood House Lodge", "lat": 50.724401888, "lon": -1.248879639},
+        {"name": "Lushington Garage", "lat": 50.724340567, "lon": -1.239416908},
+        {"name": "Wootton, Cedars", "lat": 50.724571604, "lon": -1.236239693},
+        {"name": "Wootton Tesco", "lat": 50.725071792, "lon": -1.231612972},
+        {"name": "Wootton Bridge", "lat": 50.724743326, "lon": -1.226815606},
+        {"name": "Kite Hill", "lat": 50.725525992, "lon": -1.222004020},
+        {"name": "Fishbourne Lane", "lat": 50.726368039, "lon": -1.214511007},
+        {"name": "Quarr Abbey", "lat": 50.727639578, "lon": -1.204169599},
+        {"name": "Binstead, Newnham Road", "lat": 50.727046679, "lon": -1.191187511},
+        {"name": "Binstead, Binstead Arms", "lat": 50.727284902, "lon": -1.185360298},
+        {"name": "Binstead, Ringwood Road", "lat": 50.727829718, "lon": -1.180972840},
+        {"name": "St Vincents", "lat": 50.728206988, "lon": -1.174533790},
+        {"name": "Parish Church", "lat": 50.727525908, "lon": -1.167277447},
+        {"name": "John Street", "lat": 50.727869270, "lon": -1.164990257},
+        {"name": "Cross Street", "lat": 50.729918467, "lon": -1.162318411},
+        {"name": "Belvedere Street", "lat": 50.729485182, "lon": -1.158344692},
+        {"name": "Ryde Transport Interchange", "lat": 50.732771227, "lon": -1.160099561}
+      ],
+      "departures": [
+        "07:10", "08:20", "09:30", "10:40", "11:50", "13:00",
+        "14:10", "15:20", "16:30", "17:40", "18:50", "20:00",
+        "21:10", "22:20", "23:25"
+      ]
+    }
+  ]
+}
