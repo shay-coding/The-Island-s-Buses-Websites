@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IslandLink OnDemand - The Island's Buses</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        :root {
+            --yellow: #FFDF00;
+            --purple: #BC14FE;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--yellow);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: var(--purple);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.6em;
+        }
+        header p {
+            margin: 4px 0 0 0;
+            font-size: 1em;
+            color: var(--yellow);
+            font-weight: bold;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        form, #ticketView {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 0.9em;
+            color: var(--purple);
+        }
+        input, select, textarea, button {
+            padding: 8px;
+            font-size: 0.9em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: var(--purple);
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #9a0fcf;
+        }
+
+        /* Ticket View */
+        #ticketView {
+            display: none;
+            text-align: center;
+        }
+        #ticketView h2 {
+            font-size: 1.5em;
+            color: var(--purple);
+        }
+        .ticket-details {
+            margin-top: 10px;
+            text-align: left;
+            display: inline-block;
+            background: var(--yellow);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: black;
+            font-weight: 500;
+        }
+        .ticket-details p {
+            margin: 5px 0;
+        }
+        .ticket-qr {
+            margin-top: 10px;
+        }
+        .ticket-note {
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--purple);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IslandLink OnDemand</h1>
+        <p>by The Island's Buses</p>
+    </header>
+    <main>
+        <form id="bookingForm">
+            <label for="pickup">Pickup Location:</label>
+            <input type="text" id="pickup" name="pickup" required>
+
+            <label for="dropoff">Drop-off Location:</label>
+            <input type="text" id="dropoff" name="dropoff" required>
+
+            <label for="date">Date:</label>
+            <input type="text" id="date" name="date" required>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required>
+
+            <label for="passengers">Number of Passengers:</label>
+            <select id="passengers" name="passengers" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5+</option>
+            </select>
+
+            <label for="notes">Special Requirements (Optional):</label>
+            <textarea id="notes" name="notes" rows="2"></textarea>
+
+            <button type="submit">Book Your Ride</button>
+        </form>
+
+        <div id="ticketView">
+            <h2>Thank You for Booking!</h2>
+            <div class="ticket-details" id="ticketDetails"></div>
+            <div class="ticket-qr">
+                <canvas id="qrCode"></canvas>
+            </div>
+            <p class="ticket-note">This is your ticket, please screenshot this</p>
+        </div>
+    </main>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        const form = document.getElementById('bookingForm');
+        const ticketView = document.getElementById('ticketView');
+        const ticketDetails = document.getElementById('ticketDetails');
+
+        const busNumbers = [7851, 7852, 7853, 7854, 7855, 7856];
+        const driverNames = [
+            "Steve", "James", "Daniel", "Michael", "William",
+            "Emma", "Olivia", "Sophia", "Isabella", "Charlotte"
+        ];
+
+        // Setup Flatpickr for current month only & disable Dec 25
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+
+        flatpickr("#date", {
+            dateFormat: "Y-m-d",
+            minDate: firstDay,
+            maxDate: lastDay,
+            disable: [
+                function(date) {
+                    // Disable Dec 25 (Christmas) every year
+                    return (date.getMonth() === 11 && date.getDate() === 25);
+                }
+            ]
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const pickup = document.getElementById('pickup').value;
+            const dropoff = document.getElementById('dropoff').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            const busNumber = busNumbers[Math.floor(Math.random() * busNumbers.length)];
+            const driverName = driverNames[Math.floor(Math.random() * driverNames.length)];
+
+            ticketDetails.innerHTML = `
+                <p><strong>Date:</strong> ${date}</p>
+                <p><strong>Time:</strong> ${time}</p>
+                <p><strong>Start Location:</strong> ${pickup}</p>
+                <p><strong>End Location:</strong> ${dropoff}</p>
+                <p><strong>Bus Number:</strong> ${busNumber}</p>
+                <p><strong>Driver Name:</strong> ${driverName}</p>
+            `;
+
+            const qrData = `Date: ${date}\nTime: ${time}\nStart: ${pickup}\nEnd: ${dropoff}\nBus: ${busNumber}\nDriver: ${driverName}`;
+            QRCode.toCanvas(document.getElementById('qrCode'), qrData, { width: 120 }, function (error) {
+                if (error) console.error(error);
+            });
+
+            form.style.display = 'none';
+            ticketView.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

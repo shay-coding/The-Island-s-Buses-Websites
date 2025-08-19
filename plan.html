@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Your Journey</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; background: #fff; }
+  header { background: #2b7cae; padding: 10px 20px; display: flex; align-items: center; }
+  header img { height: 40px; }
+  main { padding: 20px; max-width: 800px; margin: 0 auto; }
+  h1 { color: #2b7cae; }
+
+  label { display: block; margin: 15px 0 5px; color: #333; }
+  input[type="text"], input[type="time"], button { 
+    padding: 10px; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px; 
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  button { background: #2b7cae; color: #fff; cursor: pointer; border: none; }
+  button:hover { background: #1d5d8a; }
+
+  .results { margin-top: 20px; }
+  .journey { border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; background: #f9f9f9; padding: 15px; }
+  .leg { border-left: 5px solid #2b7cae; padding-left: 10px; margin-bottom: 10px; }
+  .leg strong { font-size: 16px; }
+  .leg span { display: block; margin: 2px 0; }
+
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 99;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 300px;
+  }
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .autocomplete-items div:hover {
+    background-color: #2b7cae;
+    color: #fff;
+  }
+  .autocomplete-wrapper { position: relative; display: inline-block; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">
+    <img src="/logo.png" alt="Logo">
+  </a>
+</header>
+
+<main>
+  <h1>Plan Your Journey</h1>
+
+  <div class="autocomplete-wrapper">
+    <label for="startStop">Start Stop:</label>
+    <input type="text" id="startStop" placeholder="Type stop name...">
+  </div>
+
+  <div class="autocomplete-wrapper">
+    <label for="endStop">End Stop:</label>
+    <input type="text" id="endStop" placeholder="Type stop name...">
+  </div>
+
+  <label for="time">After Time (optional):</label>
+  <input type="time" id="time">
+
+  <button id="planBtn">Find Journeys</button>
+
+  <div class="results" id="results"></div>
+</main>
+
+<script>
+let allStops = [];
+const routes = [];
+const routeFiles = [
+  "1A","1B","2","3","4","5","6","7A","7B","8","9A","9B",
+  "12","38","TNB","TDB","TSS","SEA","COA","SL","CH"
+];
+
+// Load all routes
+async function loadRoutes() {
+  for (const routeId of routeFiles) {
+    try {
+      const res = await fetch(`tracking/${routeId}.json`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      routes.push(data);
+
+      data.directions.forEach(dir => {
+        dir.stops.forEach(s => {
+          if (!allStops.includes(s.name)) allStops.push(s.name);
+        });
+      });
+    } catch (err) { console.warn(`Failed to load ${routeId}.json`, err); }
+  }
+
+  autocomplete(document.getElementById("startStop"));
+  autocomplete(document.getElementById("endStop"));
+}
+
+// --- Autocomplete ---
+function autocomplete(input) {
+  input.addEventListener("input", function() {
+    const val = this.value.toLowerCase();
+    closeAllLists();
+    if (!val) return;
+
+    const list = document.createElement("div");
+    list.setAttribute("class", "autocomplete-items");
+    this.parentNode.appendChild(list);
+
+    let count = 0;
+    allStops.forEach(stop => {
+      if (stop.toLowerCase().includes(val) && count < 10) {
+        const item = document.createElement("div");
+        item.innerHTML = `<strong>${stop.substr(0, val.length)}</strong>${stop.substr(val.length)}`;
+        item.addEventListener("click", () => {
+          input.value = stop;
+          closeAllLists();
+        });
+        list.appendChild(item);
+        count++;
+      }
+    });
+  });
+
+  function closeAllLists() {
+    const items = document.querySelectorAll(".autocomplete-items");
+    items.forEach(i => i.parentNode.removeChild(i));
+  }
+
+  document.addEventListener("click", function(e) {
+    if (!input.contains(e.target)) closeAllLists();
+  });
+}
+
+// --- Time helpers ---
+function addMinutes(time, minsToAdd) {
+  let [h, m] = time.split(":").map(Number);
+  m += minsToAdd;
+  h += Math.floor(m / 60);
+  m %= 60;
+  h %= 24;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+// Estimate stop times using route length
+function getEstimatedStopTimes(routeData, dir, departure) {
+  const stops = dir.stops.map(s => s.name);
+  const minutesPerStop = routeData.route.length / (stops.length - 1);
+  const stopTimes = stops.map((stop, index) => ({
+    stop,
+    time: addMinutes(departure, Math.round(minutesPerStop * index))
+  }));
+  return stopTimes;
+}
+
+// --- Journey Finder ---
+function findJourneys(start, end, afterTime) {
+  const journeys = [];
+
+  // 1️⃣ Direct journeys
+  routes.forEach(routeData => {
+    routeData.directions.forEach(dir => {
+      const stops = dir.stops.map(s => s.name);
+      const sIndex = stops.indexOf(start);
+      const eIndex = stops.indexOf(end);
+      if (sIndex !== -1 && eIndex !== -1 && sIndex < eIndex) {
+        dir.departures.forEach(dep => {
+          if (!afterTime || dep >= afterTime) {
+            const stopTimes = getEstimatedStopTimes(routeData, dir, dep);
+            journeys.push([{
+              route: routeData.route,
+              direction: dir.name,
+              departure: dep,
+              stops: stopTimes.slice(sIndex, eIndex + 1).map(x => x.stop),
+              times: stopTimes.slice(sIndex, eIndex + 1).map(x => x.time)
+            }]);
+          }
+        });
+      }
+    });
+  });
+
+  // 2️⃣ Single-transfer journeys
+  allStops.forEach(intermediate => {
+    if (intermediate === start || intermediate === end) return;
+
+    routes.forEach(firstRoute => {
+      firstRoute.directions.forEach(firstDir => {
+        const firstStops = firstDir.stops.map(s => s.name);
+        const sIndex = firstStops.indexOf(start);
+        const iIndex = firstStops.indexOf(intermediate);
+        if (sIndex === -1 || iIndex === -1 || sIndex >= iIndex) return;
+
+        const firstDepartures = firstDir.departures.filter(d => !afterTime || d >= afterTime);
+
+        routes.forEach(secondRoute => {
+          secondRoute.directions.forEach(secondDir => {
+            const secondStops = secondDir.stops.map(s => s.name);
+            const i2Index = secondStops.indexOf(intermediate);
+            const eIndex = secondStops.indexOf(end);
+            if (i2Index === -1 || eIndex === -1 || i2Index >= eIndex) return;
+
+            firstDepartures.forEach(dep1 => {
+              const firstStopTimes = getEstimatedStopTimes(firstRoute, firstDir, dep1);
+              const arrival1 = firstStopTimes[iIndex].time;
+
+              secondDir.departures.forEach(dep2 => {
+                const secondStopTimes = getEstimatedStopTimes(secondRoute, secondDir, dep2);
+                if (secondStopTimes[i2Index].time >= arrival1) {
+                  journeys.push([
+                    {
+                      route: firstRoute.route,
+                      direction: firstDir.name,
+                      departure: dep1,
+                      stops: firstStopTimes.slice(sIndex, iIndex + 1).map(x => x.stop),
+                      times: firstStopTimes.slice(sIndex, iIndex + 1).map(x => x.time)
+                    },
+                    {
+                      route: secondRoute.route,
+                      direction: secondDir.name,
+                      departure: dep2,
+                      stops: secondStopTimes.slice(i2Index, eIndex + 1).map(x => x.stop),
+                      times: secondStopTimes.slice(i2Index, eIndex + 1).map(x => x.time)
+                    }
+                  ]);
+                }
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  return journeys;
+}
+
+// --- Display results ---
+function displayResults(journeys) {
+  const container = document.getElementById("results");
+  container.innerHTML = "";
+
+  if (!journeys.length) {
+    container.innerHTML = "<p>No journeys found.</p>";
+    return;
+  }
+
+  // Only show the next 2 journeys
+  const nextJourneys = journeys.slice(0, 2);
+
+  nextJourneys.forEach(journey => {
+    const jDiv = document.createElement("div");
+    jDiv.className = "journey";
+
+    journey.forEach(leg => {
+      const legDiv = document.createElement("div");
+      legDiv.className = "leg";
+      legDiv.style.borderLeftColor = leg.route.color || "#2b7cae";
+      legDiv.innerHTML = `
+        <strong>${leg.route.name} (${leg.direction})</strong>
+        <span>Departure: ${leg.times[0]}</span>
+        <span>Stops: ${leg.stops.map((s,i) => s + " (" + leg.times[i] + ")").join(" → ")}</span>
+      `;
+      jDiv.appendChild(legDiv);
+    });
+
+    container.appendChild(jDiv);
+  });
+}
+
+// --- Button event ---
+document.getElementById("planBtn").addEventListener("click", () => {
+  const start = document.getElementById("startStop").value.trim();
+  const end = document.getElementById("endStop").value.trim();
+  const time = document.getElementById("time").value;
+
+  if (!start || !end) return alert("Please enter both start and end stops.");
+
+  const journeys = findJourneys(start, end, time);
+  displayResults(journeys);
+});
+
+loadRoutes();
+</script>
+</body>
+</html>
