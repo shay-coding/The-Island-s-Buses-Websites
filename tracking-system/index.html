@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Bus Tracker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .header {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #141414;
+      text-decoration: none;
+    }
+
+    #clock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-left: auto;
+      user-select: none;
+      position: relative;
+    }
+
+    #clock {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    #toggle-routes-btn {
+      background: #007bff;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      padding: 4px 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #toggle-routes-btn:focus {
+      outline: none;
+      box-shadow: 0 0 2px 2px #0056b3;
+    }
+
+    #routes-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: 180px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 8px;
+      margin-top: 4px;
+      display: none;
+      z-index: 1100;
+      border-radius: 4px;
+    }
+
+    #routes-dropdown label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.9rem;
+      color: #222;
+    }
+
+    #routes-dropdown label input {
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    #map {
+      position: absolute;
+      top: 64px; /* height of header */
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="nav-container">
+    <a class="logo" href="/">Back to Homepage</a>
+
+    <div id="clock-container">
+      <div id="clock">Time: --:--:--</div>
+      <button id="toggle-routes-btn" aria-expanded="false" aria-controls="routes-dropdown">
+        Routes ▼
+      </button>
+      <div id="routes-dropdown" role="region" aria-label="Toggle routes visibility">
+        <!-- Checkboxes will be added dynamically here -->
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([50.69, -1.31], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const routeIds = [
+    "1A","1B","2","3","4","5","6","7A","7B","8",
+    "9A","9B","12","38","TNB","TDB","TSS","COA","SL","SEA","CH",
+    "N1","N3","N5","N7","N9"
+  ];
+
+  // Store layers by routeId for toggling
+  const routeLayers = {};
+  // Store bus markers by routeId
+  const busMarkersByRoute = {};
+
+  function createBusIcon(routeId, color) {
+    return L.divIcon({
+      html: `<div style="
+        width: 24px; height: 24px;
+        border-radius: 12px;
+        background-color: ${color};
+        border: 2px solid white;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        line-height: 24px;
+        font-size: 14px;
+        user-select: none;
+      ">${routeId}</div>`,
+      className: '',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
+    });
+  }
+
+  function timeToMinutes(t) {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  const busLayer = L.layerGroup().addTo(map);
+  const allBuses = [];
+
+  function drawRouteAndStops(routeColor, directionData, routeName, routeId) {
+    const latlngs = directionData.stops.map(s => [s.lat, s.lon]);
+    const polyline = L.polyline(latlngs, {
+      color: routeColor,
+      weight: 4,
+      opacity: 0.7
+    });
+
+    polyline.addTo(map);
+
+    if (!routeLayers[routeId]) routeLayers[routeId] = L.layerGroup().addTo(map);
+    routeLayers[routeId].addLayer(polyline);
+
+    directionData.stops.forEach(stop => {
+      const marker = L.circleMarker([stop.lat, stop.lon], {
+        radius: 5,
+        fillColor: '#888',
+        color: '#444',
+        weight: 1,
+        fillOpacity: 0.9
+      });
+      routeLayers[routeId].addLayer(marker);
+    });
+  }
+
+  function addBusesForDirection(routeId, routeColor, directionData, routeLength) {
+    const stops = directionData.stops;
+    const departures = directionData.departures || [];
+
+    if (stops.length < 2) return;
+
+    const segmentCount = stops.length - 1;
+    const timePerSegment = routeLength / segmentCount;
+
+    departures.forEach(dep => {
+      allBuses.push({
+        routeId,
+        routeColor,
+        directionData,
+        stops,
+        depTime: timeToMinutes(dep),
+        routeLength,
+        segmentCount,
+        timePerSegment
+      });
+    });
+  }
+
+  let loadedCount = 0;
+  routeIds.forEach(routeId => {
+    fetch(`${routeId}.json`)
+      .then(resp => {
+        if (!resp.ok) throw new Error(`Failed to load ${routeId}.json`);
+        return resp.json();
+      })
+      .then(data => {
+        if (!data.route || !data.directions) {
+          console.warn(`${routeId}.json missing route or directions`);
+          loadedCount++;
+          if (loadedCount === routeIds.length) {
+            startRealTimeTracking();
+            populateRoutesDropdown();
+          }
+          return;
+        }
+
+        const routeColor = data.route.color || '#000000';
+
+        data.directions.forEach(direction => {
+          drawRouteAndStops(routeColor, direction, data.route.name, routeId);
+
+          const routeLength = data.route.length || 30;
+          addBusesForDirection(routeId, routeColor, direction, routeLength);
+        });
+
+        loadedCount++;
+        if (loadedCount === routeIds.length) {
+          startRealTimeTracking();
+          populateRoutesDropdown();
+        }
+      })
+      .catch(err => {
+        console.error(`Error loading ${routeId}.json:`, err);
+        loadedCount++;
+        if (loadedCount === routeIds.length) {
+          startRealTimeTracking();
+          populateRoutesDropdown();
+        }
+      });
+  });
+
+  function updateBusesSmooth() {
+    // Clear all previous markers
+    Object.values(busMarkersByRoute).forEach(markers => {
+      markers.forEach(marker => map.removeLayer(marker));
+    });
+
+    const now = new Date();
+    let nowMinutes = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+
+    // Adjust for after midnight times (0:00 to 3:00)
+    if (nowMinutes < 180) {
+      nowMinutes += 1440;
+    }
+
+    // Create a fresh set of markers grouped by routeId
+    const newBusMarkersByRoute = {};
+
+    allBuses.forEach(bus => {
+      // Check if this route is enabled
+      if (!routeLayers[bus.routeId] || !map.hasLayer(routeLayers[bus.routeId])) {
+        // Route is toggled off, skip drawing buses
+        return;
+      }
+
+      let depTimeNorm = bus.depTime;
+      if (depTimeNorm < 180) {
+        depTimeNorm += 1440;
+      }
+
+      let appearTime = depTimeNorm - 2;
+      let disappearTime = depTimeNorm + bus.routeLength + 1;
+
+      if (disappearTime < appearTime) {
+        disappearTime += 1440;
+      }
+
+      if (nowMinutes < appearTime || nowMinutes > disappearTime) return;
+
+      const elapsed = Math.max(0, nowMinutes - depTimeNorm);
+
+      let pos;
+
+      if (elapsed >= bus.routeLength) {
+        const lastStop = bus.stops[bus.stops.length - 1];
+        pos = [lastStop.lat, lastStop.lon];
+      } else {
+        const segmentIndex = Math.floor(elapsed / bus.timePerSegment);
+        const t = (elapsed % bus.timePerSegment) / bus.timePerSegment;
+
+        const from = [bus.stops[segmentIndex].lat, bus.stops[segmentIndex].lon];
+        const to = [bus.stops[segmentIndex + 1].lat, bus.stops[segmentIndex + 1].lon];
+
+        pos = [
+          from[0] + (to[0] - from[0]) * t,
+          from[1] + (to[1] - from[1]) * t
+        ];
+      }
+
+      const marker = L.marker(pos, {
+        icon: createBusIcon(bus.routeId, bus.routeColor),
+        interactive: false
+      }).addTo(map);
+
+      if (!newBusMarkersByRoute[bus.routeId]) newBusMarkersByRoute[bus.routeId] = [];
+      newBusMarkersByRoute[bus.routeId].push(marker);
+    });
+
+    // Replace old markers with new ones
+    Object.keys(busMarkersByRoute).forEach(routeId => {
+      if (!newBusMarkersByRoute[routeId]) {
+        // Remove markers for routes now toggled off
+        busMarkersByRoute[routeId].forEach(marker => map.removeLayer(marker));
+      }
+    });
+
+    Object.assign(busMarkersByRoute, newBusMarkersByRoute);
+
+    requestAnimationFrame(updateBusesSmooth);
+  }
+
+  function startRealTimeTracking() {
+    updateBusesSmooth();
+  }
+
+  // Clock update function
+  function updateClock() {
+    const clockEl = document.getElementById('clock');
+    const now = new Date();
+
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    clockEl.textContent = `Time: ${hours}:${minutes}:${seconds}`;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Toggle routes dropdown visibility
+  const toggleRoutesBtn = document.getElementById('toggle-routes-btn');
+  const routesDropdown = document.getElementById('routes-dropdown');
+
+  toggleRoutesBtn.addEventListener('click', () => {
+    const isExpanded = toggleRoutesBtn.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) {
+      routesDropdown.style.display = 'none';
+      toggleRoutesBtn.setAttribute('aria-expanded', 'false');
+      toggleRoutesBtn.textContent = 'Routes ▼';
+    } else {
+      routesDropdown.style.display = 'block';
+      toggleRoutesBtn.setAttribute('aria-expanded', 'true');
+      toggleRoutesBtn.textContent = 'Routes ▲';
+    }
+  });
+
+  // Populate routes dropdown with checkboxes
+  function populateRoutesDropdown() {
+    routesDropdown.innerHTML = ''; // clear existing
+
+    routeIds.forEach(routeId => {
+      const wrapper = document.createElement('label');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+      checkbox.dataset.routeId = routeId;
+
+      checkbox.addEventListener('change', e => {
+        const id = e.target.dataset.routeId;
+        if (e.target.checked) {
+          // Show route layers
+          if (routeLayers[id]) map.addLayer(routeLayers[id]);
+        } else {
+          // Hide route layers
+          if (routeLayers[id]) map.removeLayer(routeLayers[id]);
+        }
+      });
+
+      wrapper.appendChild(checkbox);
+      wrapper.appendChild(document.createTextNode(routeId));
+      routesDropdown.appendChild(wrapper);
+    });
+  }
+</script>
+</body>
+</html>
