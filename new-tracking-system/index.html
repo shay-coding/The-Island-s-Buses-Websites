@@ -516,7 +516,7 @@ body.dark-mode #routes-dropdown label:hover {
     <div class="bus-popup-content">
       <div class="bus-fleet-badge" id="busPopupFleetNumber">1522</div>
       <div class="bus-icon-container">
-        <img src="liveries/default-bus.svg" alt="Bus" class="bus-icon" id="busPopupIcon">
+        <img src="/tracking/liveries/default-bus.svg" alt="Bus" class="bus-icon" id="busPopupIcon">
       </div>
       <div class="bus-registration" id="busPopupRegistration">HW62 CNA</div>
     </div>
@@ -628,7 +628,7 @@ const busPopupIcon = document.getElementById('busPopupIcon');
 // Load fleet data with improved key normalization
 async function loadFleetData() {
   try {
-    const response = await fetch('fleet.json');
+    const response = await fetch('/tracking/Fleet.json');
     if (response.ok) {
       const fleetArray = await response.json();
       fleetData = {};
@@ -679,12 +679,12 @@ function showBusPopup(dutyId, routeNumber) {
     busPopupFleetNumber.textContent = fleetInfo.fleetNumber || assignedFleet;
     busPopupRegistration.textContent = fleetInfo.reg || 'Unknown Registration';
     
-    let imageSrc = 'liveries/default-bus.svg';
+    let imageSrc = '/tracking/liveries/default-bus.svg';
     if (fleetInfo.livery) {
-      if (fleetInfo.livery.startsWith('liveries/')) {
+      if (fleetInfo.livery.startsWith('/tracking/liveries/')) {
         imageSrc = fleetInfo.livery;
       } else {
-        imageSrc = `liveries/${fleetInfo.livery}`;
+        imageSrc = `/tracking/liveries/${fleetInfo.livery}`;
       }
     }
     
@@ -693,12 +693,12 @@ function showBusPopup(dutyId, routeNumber) {
   } else {
     busPopupFleetNumber.textContent = assignedFleet || 'Unknown Fleet';
     busPopupRegistration.textContent = 'Unknown Registration';
-    busPopupIcon.src = 'liveries/default-bus.svg';
+    busPopupIcon.src = '/tracking/liveries/default-bus.svg';
     busPopupIcon.alt = 'Bus';
   }
   
   busPopupIcon.onerror = function() {
-    this.src = 'liveries/default-bus.svg';
+    this.src = '/tracking/liveries/default-bus.svg';
     this.alt = 'Bus';
   };
   
@@ -969,7 +969,7 @@ async function loadAllRoutes(){
   debug('Loading routes...');
   for(const id of routeIds){
     try{
-      const res=await fetch(`routes/${id}.json`);
+      const res=await fetch(`/tracking/routes/${id}.json`);
       if (!res.ok) {
         console.warn(`Route ${id} returned ${res.status}`);
         continue;
@@ -988,7 +988,7 @@ async function loadAllRoutes(){
 // Load assignments
 async function loadAssignments(){
   try{ 
-    const res=await fetch('assignments.json');
+    const res=await fetch('/tracking/assignments.json');
     if (res.ok) {
       const rawAssignments = await res.json();
       busAssignments = {};
@@ -1008,7 +1008,7 @@ async function loadAssignments(){
 async function loadDuties(){
   debug('Loading duties...');
   try{
-    const res=await fetch('duties/index.json');
+    const res=await fetch('/tracking/duties/index.json');
     if (!res.ok) {
       debug('Failed to load duties index');
       return;
@@ -1018,7 +1018,7 @@ async function loadDuties(){
     
     for(const file of dutyFiles){
       try{
-        const r=await fetch(`duties/${file}`);
+        const r=await fetch(`/tracking/duties/${file}`);
         if (!r.ok) {
           console.warn(`Duty file ${file} returned ${r.status}`);
           continue;
