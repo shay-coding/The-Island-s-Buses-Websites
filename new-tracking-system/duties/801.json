@@ -1,0 +1,19 @@
+{
+  "duty": {
+    "id": "801",
+    "name": "Duty 801",
+    "bus": "",
+    "departures": [
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "06:40", "arrive_terminus": "08:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "08:40", "arrive_terminus": "10:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "10:40", "arrive_terminus": "12:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "12:40", "arrive_terminus": "14:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "14:40", "arrive_terminus": "16:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "16:40", "arrive_terminus": "18:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "18:40", "arrive_terminus": "20:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "20:40", "arrive_terminus": "20:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "22:40", "arrive_terminus": "00:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "00:40", "arrive_terminus": "02:29"}
+    ]
+  }
+}
