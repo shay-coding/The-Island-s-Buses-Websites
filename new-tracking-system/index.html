@@ -862,7 +862,7 @@ function findMatchingDirection(routeData, depStart, depStop) {
     let endFound = false;
     let matchReasons = [];
     
-    // Strategy 1: Exact stop name matching anywhere in route
+    // Exact stop name matching anywhere in route
     const startMatches = stops.filter(s => 
       s.cleanName.includes(cleanStart) || 
       cleanStart.includes(s.cleanName) ||
@@ -892,6 +892,29 @@ function findMatchingDirection(routeData, depStart, depStop) {
       score += 5; // High bonus for circular routes
       matchReasons.push('Circular route bonus');
     }
+    
+    // First/last stop matching (traditional linear routes)
+    const firstStop = stops[0].cleanName;
+    const lastStop = stops[stops.length - 1].cleanName;
+    
+    if (firstStop.includes(cleanStart) || cleanStart.includes(firstStop)) {
+      score += 2;
+      matchReasons.push(`First stop match: ${firstStop}`);
+    }
+    
+    if (lastStop.includes(cleanStop) || cleanStop.includes(lastStop)) {
+      score += 2;
+      matchReasons.push(`Last stop match: ${lastStop}`);
+    }
+    
+    // Partial string matching with more flexibility
+    const partialStartMatches = stops.filter(s => {
+      const stopWords = s.cleanName.split(/\s+/);
+      const startWords = cleanStart.split(/\s+/);
+      return stopWords.some(sw => startWords.some(stw => 
+        (sw.length > 2 && stw.length > 2) && (sw.includes(stw) || stw.includes(sw))
+      ));
+    });
     
     const partialEndMatches = stops.filter(s => {
       const stopWords = s.cleanName.split(/\s+/);
