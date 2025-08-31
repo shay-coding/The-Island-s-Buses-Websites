@@ -1,0 +1,12 @@
+{
+  "duty": {
+    "id": "604",
+    "name": "Duty 604",
+    "bus": "",
+    "departures": [
+      {"route": "N3", "start": "St Georges Park", "stop": "Newport Bus Station", "depart_origin": "01:38", "arrive_terminus": "01:40"},
+      {"route": "N3", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "03:00", "arrive_terminus": "04:17"},
+      {"route": "N3", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "04:25", "arrive_terminus": "05:40"}
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "duty": {
+    "id": "603",
+    "name": "Duty 603",
+    "bus": "",
+    "departures": [
+      {"route": "N3", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "01:50", "arrive_terminus": "03:07"},
+      {"route": "N3", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "03:15", "arrive_terminus": "04:30"}
+    ]
+  }
+}

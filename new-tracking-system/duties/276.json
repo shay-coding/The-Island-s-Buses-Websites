@@ -1,0 +1,25 @@
+{
+  "duty": {
+    "id": "276",
+    "name": "Duty 276",
+    "bus": "",
+    "departures": [
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "09:45", "arrive_terminus": "10:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "10:15", "arrive_terminus": "10:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "10:45", "arrive_terminus": "11:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "11:15", "arrive_terminus": "11:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "11:45", "arrive_terminus": "12:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "12:15", "arrive_terminus": "12:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "12:45", "arrive_terminus": "13:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "13:45", "arrive_terminus": "14:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "14:15", "arrive_terminus": "14:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "14:45", "arrive_terminus": "15:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "15:15", "arrive_terminus": "15:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "15:45", "arrive_terminus": "16:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "16:15", "arrive_terminus": "16:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "16:45", "arrive_terminus": "17:10"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Bus Station (Terminus)", "depart_origin": "17:15", "arrive_terminus": "17:40"},
+      {"route": "TSS", "start": "Shanklin Bus Station", "stop": "Shanklin Rail Station", "depart_origin": "17:40", "arrive_terminus": "17:42"}
+    ]
+  }
+}

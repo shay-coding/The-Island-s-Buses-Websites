@@ -1,0 +1,17 @@
+{
+  "duty": {
+    "id": "605",
+    "name": "Duty 605",
+    "bus": "",
+    "departures": [
+      {"route": "N5", "start": "Newport Bus Station", "stop": "East Cowes Waitrose", "depart_origin": "00:30", "arrive_terminus": "00:44"},
+      {"route": "N5", "start": "East Cowes Waitrose", "stop": "Newport Bus Station", "depart_origin": "00:45", "arrive_terminus": "00:58"},
+      {"route": "N5", "start": "Newport Bus Station", "stop": "East Cowes Waitrose", "depart_origin": "01:30", "arrive_terminus": "01:44"},
+      {"route": "N5", "start": "East Cowes Waitrose", "stop": "Newport Bus Station", "depart_origin": "01:45", "arrive_terminus": "01:58"},
+      {"route": "N5", "start": "Newport Bus Station", "stop": "East Cowes Waitrose", "depart_origin": "02:30", "arrive_terminus": "02:44"},
+      {"route": "N5", "start": "East Cowes Waitrose", "stop": "Newport Bus Station", "depart_origin": "02:45", "arrive_terminus": "02:58"},
+      {"route": "N5", "start": "Newport Bus Station", "stop": "East Cowes Waitrose", "depart_origin": "03:30", "arrive_terminus": "03:44"},
+      {"route": "N5", "start": "East Cowes Waitrose", "stop": "Newport Bus Station", "depart_origin": "03:45", "arrive_terminus": "03:58"}
+    ]
+  }
+}

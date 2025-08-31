@@ -1,0 +1,17 @@
+{
+  "duty": {
+    "id": "607",
+    "name": "Duty 607",
+    "bus": "",
+    "departures": [
+      {"route": "N9", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "00:35", "arrive_terminus": "00:57"},
+      {"route": "N9", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "01:00", "arrive_terminus": "01:21"},
+      {"route": "N9", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "01:30", "arrive_terminus": "01:52"},
+      {"route": "N9", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "01:55", "arrive_terminus": "02:16"},
+      {"route": "N9", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "02:25", "arrive_terminus": "02:47"},
+      {"route": "N9", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "02:50", "arrive_terminus": "03:11"},
+      {"route": "N9", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "03:20", "arrive_terminus": "03:42"},
+      {"route": "N9", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "03:45", "arrive_terminus": "04:06"}
+    ]
+  }
+}

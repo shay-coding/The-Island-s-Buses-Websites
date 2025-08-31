@@ -1,0 +1,15 @@
+{
+  "duty": {
+    "id": "606",
+    "name": "Duty 606",
+    "bus": "",
+    "departures": [
+      {"route": "N7", "start": "Newport Bus Station", "stop": "Freshwater Memorial Hall", "depart_origin": "00:10", "arrive_terminus": "00:42"},
+      {"route": "N7", "start": "Freshwater Memorial Hall", "stop": "Newport Bus Station", "depart_origin": "00:45", "arrive_terminus": "01:21"},
+      {"route": "N7", "start": "Newport Bus Station", "stop": "Freshwater Memorial Hall", "depart_origin": "01:45", "arrive_terminus": "02:17"},
+      {"route": "N7", "start": "Freshwater Memorial Hall", "stop": "Newport Bus Station", "depart_origin": "02:20", "arrive_terminus": "02:56"},
+      {"route": "N7", "start": "Newport Bus Station", "stop": "Freshwater Memorial Hall", "depart_origin": "03:20", "arrive_terminus": "03:52"},
+      {"route": "N7", "start": "Freshwater Memorial Hall", "stop": "Newport Bus Station", "depart_origin": "03:55", "arrive_terminus": "04:31"}
+    ]
+  }
+}

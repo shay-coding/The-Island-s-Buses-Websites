@@ -1,0 +1,21 @@
+{
+  "duty": {
+    "id": "601",
+    "name": "Duty 601",
+    "bus": "", 
+    "departures": [
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "00:15", "arrive_terminus": "00:31"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "00:32", "arrive_terminus": "00:49"},
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "00:55", "arrive_terminus": "01:11"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "01:12", "arrive_terminus": "01:29"},
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "01:35", "arrive_terminus": "01:51"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "01:52", "arrive_terminus": "02:09"},
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "02:15", "arrive_terminus": "02:31"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "02:32", "arrive_terminus": "02:49"},
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "02:55", "arrive_terminus": "03:11"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "03:12", "arrive_terminus": "03:29"},
+      {"route": "N1", "start": "Newport Bus Station", "stop": "Cowes, Carvel Lane M&S", "depart_origin": "03:35", "arrive_terminus": "03:51"},
+      {"route": "N1", "start": "Cowes, Carvel Lane M&S", "stop": "Newport Bus Station", "depart_origin": "03:52", "arrive_terminus": "04:09"}
+    ]
+  }
+}

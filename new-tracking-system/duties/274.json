@@ -1,0 +1,13 @@
+{
+  "duty": {
+    "id": "274",
+    "name": "Duty 274",
+    "bus": "",
+    "departures": [
+      {"route": "TDB", "start": "Ryde Transport Interchange", "stop": "Ryde Transport Interchange (Terminus)", "depart_origin": "09:25", "arrive_terminus": "10:52"},
+     {"route": "TDB", "start": "Ryde Transport Interchange", "stop": "Ryde Transport Interchange (Terminus)", "depart_origin": "11:25", "arrive_terminus": "12:52"},
+     {"route": "TDB", "start": "Ryde Transport Interchange", "stop": "Ryde Transport Interchange (Terminus)", "depart_origin": "13:45", "arrive_terminus": "15:22"},
+     {"route": "TDB", "start": "Ryde Transport Interchange", "stop": "Ryde Transport Interchange (Terminus)", "depart_origin": "15:45", "arrive_terminus": "17:10"}
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "duty": {
+    "id": "272",
+    "name": "Duty 272",
+    "bus": "",
+    "departures": [
+      {"route": "TNB", "start": "Yarmouth Bus Station", "stop": "Yarmouth Bus Station (Terminus)", "depart_origin": "10:25", "arrive_terminus": "11:45"},
+     {"route": "TNB", "start": "Yarmouth Bus Station", "stop": "Yarmouth Bus Station (Terminus)", "depart_origin": "11:55", "arrive_terminus": "13:15"},
+      {"route": "TNB", "start": "Yarmouth Bus Station", "stop": "Yarmouth Bus Station (Terminus)", "depart_origin": "13:25", "arrive_terminus": "14:45"},
+     {"route": "TNB", "start": "Yarmouth Bus Station", "stop": "Yarmouth Bus Station (Terminus)", "depart_origin": "14:55", "arrive_terminus": "16:15"},
+    {"route": "TNB", "start": "Yarmouth Bus Station", "stop": "Yarmouth Bus Station (Terminus)", "depart_origin": "16:25", "arrive_terminus": "17:32"}
+    ]
+  }
+}

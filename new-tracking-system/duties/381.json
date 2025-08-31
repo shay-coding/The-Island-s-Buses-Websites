@@ -1,0 +1,38 @@
+{
+  "duty": {
+    "id": "381",
+    "name": "Duty 381",
+    "bus": "",
+    "departures": [
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "07:05", "arrive_terminus": "07:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "07:35", "arrive_terminus": "08:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "08:05", "arrive_terminus": "08:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "08:35", "arrive_terminus": "09:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "09:05", "arrive_terminus": "09:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "09:35", "arrive_terminus": "10:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "10:05", "arrive_terminus": "10:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "10:35", "arrive_terminus": "11:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "11:05", "arrive_terminus": "11:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "11:35", "arrive_terminus": "12:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "12:05", "arrive_terminus": "12:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "12:35", "arrive_terminus": "13:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "13:05", "arrive_terminus": "13:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "13:35", "arrive_terminus": "14:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "14:05", "arrive_terminus": "14:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "14:35", "arrive_terminus": "15:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "15:05", "arrive_terminus": "15:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "15:35", "arrive_terminus": "16:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "16:05", "arrive_terminus": "16:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "16:35", "arrive_terminus": "17:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "17:05", "arrive_terminus": "17:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "17:35", "arrive_terminus": "18:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "18:05", "arrive_terminus": "18:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "18:35", "arrive_terminus": "19:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "19:05", "arrive_terminus": "19:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "19:35", "arrive_terminus": "20:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "20:05", "arrive_terminus": "20:32"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "20:35", "arrive_terminus": "21:02"},
+      {"route": "38", "start": "Newport Bus Station", "stop": "Newport Bus Station (Terminus)", "depart_origin": "21:05", "arrive_terminus": "21:32"}
+    ]
+  }
+}

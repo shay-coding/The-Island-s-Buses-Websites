@@ -1,0 +1,16 @@
+{
+  "duty": {
+    "id": "201",
+    "name": "Duty 201",
+    "bus": "",
+    "departures": [
+      {"route": "2", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "07:15", "arrive_terminus": "08:45"},
+      {"route": "2", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "09:30", "arrive_terminus": "11:02"},
+      {"route": "2", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "11:15", "arrive_terminus": "12:45"},
+      {"route": "2", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "13:30", "arrive_terminus": "15:02"},
+      {"route": "2", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "15:15", "arrive_terminus": "16:45"},
+      {"route": "2", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "17:30", "arrive_terminus": "19:02"},
+      {"route": "2", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "19:15", "arrive_terminus": "20:45"}
+    ]
+  }
+}
