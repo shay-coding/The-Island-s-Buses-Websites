@@ -1,0 +1,63 @@
+{
+  "route": {
+    "id": "1B",
+    "name": "Route 1B",
+    "color": "#e61e26"
+  },
+  "directions": [
+    {
+      "name": "Newport to Cowes",
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698547380, "lon": -1.294673568},
+        {"name": "Towngate", "lat": 50.701869354, "lon": -1.297045187},
+        {"name": "Hookes Way", "lat": 50.704907595, "lon": -1.298316781},
+        {"name": "Forest Road", "lat": 50.707458398, "lon": -1.300785414},
+        {"name": "St Mary's Hospital", "lat": 50.710128954, "lon": -1.302640984},
+        {"name": "Lonsdale Avenue", "lat": 50.716419918, "lon": -1.304575787},
+        {"name": "Chapel Corner", "lat": 50.721473512, "lon": -1.304515186},
+        {"name": "Stag Lane", "lat": 50.724323000, "lon": -1.304987997},
+        {"name": "Crockers Farm", "lat": 50.726571902, "lon": -1.305513802},
+        {"name": "County Showground", "lat": 50.730352445, "lon": -1.306537463},
+        {"name": "Chawton Lane", "lat": 50.734129674, "lon": -1.306520680},
+        {"name": "Horseshoe Inn", "lat": 50.738705764, "lon": -1.307887992},
+        {"name": "Uplands Road", "lat": 50.740781565, "lon": -1.309147072},
+        {"name": "Four Cross", "lat": 50.744598029, "lon": -1.312790165},
+        {"name": "Three Gates Road", "lat": 50.748814100, "lon": -1.312530021},
+        {"name": "Broadfields Avenue", "lat": 50.752586997, "lon": -1.313367849},
+        {"name": "Round House", "lat": 50.755176911, "lon": -1.314239959},
+        {"name": "IW Community Club", "lat": 50.755673806, "lon": -1.312231100},
+        {"name": "Parklands Avenue", "lat": 50.756856523, "lon": -1.308456866},
+        {"name": "Rashley's", "lat": 50.760058418, "lon": -1.304000342},
+        {"name": "Park Gates", "lat": 50.761952980, "lon": -1.300582014},
+        {"name": "Cowes, Carvel Lane M&S", "lat": 50.762193128, "lon": -1.298566631}
+      ]
+    },
+    {
+      "name": "Cowes to Newport",
+      "stops": [
+        {"name": "Cowes, Carvel Lane M&S", "lat": 50.762193128, "lon": -1.298566631},
+        {"name": "Park Gates", "lat": 50.761952980, "lon": -1.300582014},
+        {"name": "Rashley's", "lat": 50.760058418, "lon": -1.304000342},
+        {"name": "Parklands Avenue", "lat": 50.756856523, "lon": -1.308456866},
+        {"name": "IW Community Club", "lat": 50.755673806, "lon": -1.312231100},
+        {"name": "Round House", "lat": 50.755176911, "lon": -1.314239959},
+        {"name": "Broadfields Avenue", "lat": 50.752586997, "lon": -1.313367849},
+        {"name": "Three Gates Road", "lat": 50.748814100, "lon": -1.312530021},
+        {"name": "Four Cross", "lat": 50.744598029, "lon": -1.312790165},
+        {"name": "Uplands Road", "lat": 50.740781565, "lon": -1.309147072},
+        {"name": "Horseshoe Inn", "lat": 50.738705764, "lon": -1.307887992},
+        {"name": "Chawton Lane", "lat": 50.734129674, "lon": -1.306520680},
+        {"name": "County Showground", "lat": 50.730352445, "lon": -1.306537463},
+        {"name": "Crockers Farm", "lat": 50.726571902, "lon": -1.305513802},
+        {"name": "Stag Lane", "lat": 50.724323000, "lon": -1.304987997},
+        {"name": "Chapel Corner", "lat": 50.721473512, "lon": -1.304515186},
+        {"name": "Lonsdale Avenue", "lat": 50.716419918, "lon": -1.304575787},
+        {"name": "St Mary's Hospital", "lat": 50.710128954, "lon": -1.302640984},
+        {"name": "Forest Road", "lat": 50.707458398, "lon": -1.300785414},
+        {"name": "Hookes Way", "lat": 50.704907595, "lon": -1.298316781},
+        {"name": "Towngate", "lat": 50.701869354, "lon": -1.297045187},
+        {"name": "Newport Bus Station", "lat": 50.698547380, "lon": -1.294673568}
+      ]
+    }
+  ]
+}

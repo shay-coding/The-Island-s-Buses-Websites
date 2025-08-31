@@ -1,0 +1,33 @@
+{
+  "route": {
+    "id": "CH",
+    "name": "Route CH",
+    "color": "#c7cc9b"
+  },
+  "directions": [
+    {
+      "name": "Newport to Carisbrooke",
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698003666, "lon": -1.294271101},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Carisbrooke, Castle Hill", "lat": 50.691073589, "lon": -1.308348177},
+        {"name": "Carisbrooke Castle", "lat": 50.6874509, "lon": -1.3151665}
+      ]
+    },
+    {
+      "name": "Carisbrooke to Newport",
+      "stops": [
+        {"name": "Carisbrooke Castle", "lat": 50.6874509, "lon": -1.3151665},
+        {"name": "Carisbrooke, Castle Hill", "lat": 50.691073589, "lon": -1.308348177},
+        {"name": "Cedar Hill", "lat": 50.691743113, "lon": -1.309032047},
+        {"name": "Lukely Terrace", "lat": 50.693223446, "lon": -1.306929108},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Newport Bus Station", "lat": 50.698003666, "lon": -1.294271101}
+      ]
+    }
+  ]
+}

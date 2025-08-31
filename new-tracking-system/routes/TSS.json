@@ -1,0 +1,34 @@
+{
+  "route": {
+    "id": "TSS",
+    "name": "Route TSS",
+    "color": "#ed007e",
+    "type": "circular"
+  },
+  "directions": [
+    {
+      "stops": [
+        {"name": "Shanklin Bus Station", "lat": 50.631748391, "lon": -1.179546459},
+        {"name": "Shanklin Rail Station", "lat": 50.633835703, "lon": -1.179679817},
+        {"name": "Ryedale", "lat": 50.633505822, "lon": -1.178808879},
+        {"name": "Atherley Cross Road", "lat": 50.633267662, "lon": -1.175645694},
+        {"name": "Hope Road", "lat": 50.633217442, "lon": -1.172366122},
+        {"name": "Esplanade Gardens", "lat": 50.633138033, "lon": -1.169963035},
+        {"name": "Summer Arcade", "lat": 50.631781002, "lon": -1.170924936},
+        {"name": "Esplanade Clock Tower", "lat": 50.629323159, "lon": -1.172321366},
+        {"name": "Palestine Slipway", "lat": 50.627402912, "lon": -1.172920595},
+        {"name": "Esplanade Clock Tower", "lat": 50.629029137, "lon": -1.172708270},
+        {"name": "Esplanade Gardens", "lat": 50.633246519, "lon": -1.170131511},
+        {"name": "Hope Road", "lat": 50.633006914, "lon": -1.171846645},
+        {"name": "Dove Court", "lat": 50.632559292, "lon": -1.174668302},
+        {"name": "Holly Lodge", "lat": 50.631467964, "lon": -1.175096032},
+        {"name": "Hambledon Hotel", "lat": 50.629956151, "lon": -1.175350117},
+        {"name": "Brunswick Hotel", "lat": 50.628092031, "lon": -1.174986843},
+        {"name": "Old Village, Chine Avenue", "lat": 50.626045470, "lon": -1.178076393},
+        {"name": "Daish's", "lat": 50.626790476, "lon": -1.179152029},
+        {"name": "Regent Street", "lat": 50.631152962, "lon": -1.178001503},
+        {"name": "Shanklin Bus Station (Terminus)", "lat": 50.631748391, "lon": -1.179546459}
+      ]
+    }
+  ]
+}

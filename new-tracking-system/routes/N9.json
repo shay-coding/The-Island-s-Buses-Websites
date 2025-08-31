@@ -1,0 +1,67 @@
+{
+  "route": {
+    "id": "N9",
+    "name": "Route N9",
+    "color": "#412777"
+  },
+  "directions": [
+    {
+      "name": "Newport to Ryde",
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698064039, "lon": -1.293845417},
+        {"name": "Hillside", "lat": 50.702759961, "lon": -1.288348961},
+        {"name": "Seaclose", "lat": 50.705437802, "lon": -1.286399044},
+        {"name": "Medina, Leisure Centre", "lat": 50.708823877, "lon": -1.282778703},
+        {"name": "Orchard House", "lat": 50.712524972, "lon": -1.279671964},
+        {"name": "Whitehouses", "lat": 50.719684805, "lon": -1.272229460},
+        {"name": "Binfield Corner", "lat": 50.722032796, "lon": -1.268056480},
+        {"name": "Crematorium", "lat": 50.724715725, "lon": -1.257162517},
+        {"name": "Westwood House Lodge", "lat": 50.724569973, "lon": -1.247709001},
+        {"name": "Lushington Garage", "lat": 50.724671566, "lon": -1.240530771},
+        {"name": "Wootton, Cedars", "lat": 50.724705276, "lon": -1.236053345},
+        {"name": "Wootton Tesco", "lat": 50.725190005, "lon": -1.232138920},
+        {"name": "Wootton Bridge", "lat": 50.724766638, "lon": -1.226262695},
+        {"name": "Kite Hill", "lat": 50.726484111, "lon": -1.219490500},
+        {"name": "Fishbourne Lane", "lat": 50.726862842, "lon": -1.212952756},
+        {"name": "Quarr Abbey", "lat": 50.727930601, "lon": -1.204646393},
+        {"name": "Binstead, Newnham Road", "lat": 50.727235846, "lon": -1.189937459},
+        {"name": "Binstead, Binstead Arms", "lat": 50.727396462, "lon": -1.187171892},
+        {"name": "Binstead, Ringwood Road", "lat": 50.727953612, "lon": -1.180687313},
+        {"name": "St Vincents", "lat": 50.728416505, "lon": -1.174912659},
+        {"name": "Queens Road", "lat": 50.727309434, "lon": -1.172240145},
+        {"name": "Parish Church", "lat": 50.728140981, "lon": -1.166264980},
+        {"name": "Union Street", "lat": 50.730297030, "lon": -1.162614030},
+        {"name": "Ryde Transport Interchange", "lat": 50.732516715, "lon": -1.159573171}
+      ]
+    },
+    {
+      "name": "Ryde to Newport",
+      "stops": [
+        {"name": "Ryde Transport Interchange", "lat": 50.732516715, "lon": -1.159573171},
+        {"name": "Union Street", "lat": 50.730297030, "lon": -1.162614030},
+        {"name": "Parish Church", "lat": 50.728140981, "lon": -1.166264980},
+        {"name": "Queens Road", "lat": 50.727309434, "lon": -1.172240145},
+        {"name": "St Vincents", "lat": 50.728416505, "lon": -1.174912659},
+        {"name": "Binstead, Ringwood Road", "lat": 50.727953612, "lon": -1.180687313},
+        {"name": "Binstead, Binstead Arms", "lat": 50.727396462, "lon": -1.187171892},
+        {"name": "Binstead, Newnham Road", "lat": 50.727235846, "lon": -1.189937459},
+        {"name": "Quarr Abbey", "lat": 50.727930601, "lon": -1.204646393},
+        {"name": "Fishbourne Lane", "lat": 50.726862842, "lon": -1.212952756},
+        {"name": "Kite Hill", "lat": 50.726484111, "lon": -1.219490500},
+        {"name": "Wootton Bridge", "lat": 50.724766638, "lon": -1.226262695},
+        {"name": "Wootton Tesco", "lat": 50.725190005, "lon": -1.232138920},
+        {"name": "Wootton, Cedars", "lat": 50.724705276, "lon": -1.236053345},
+        {"name": "Lushington Garage", "lat": 50.724671566, "lon": -1.240530771},
+        {"name": "Westwood House Lodge", "lat": 50.724569973, "lon": -1.247709001},
+        {"name": "Crematorium", "lat": 50.724715725, "lon": -1.257162517},
+        {"name": "Binfield Corner", "lat": 50.722032796, "lon": -1.268056480},
+        {"name": "Whitehouses", "lat": 50.719684805, "lon": -1.272229460},
+        {"name": "Orchard House", "lat": 50.712524972, "lon": -1.279671964},
+        {"name": "Medina, Leisure Centre", "lat": 50.708823877, "lon": -1.282778703},
+        {"name": "Seaclose", "lat": 50.705437802, "lon": -1.286399044},
+        {"name": "Hillside", "lat": 50.702759961, "lon": -1.288348961},
+        {"name": "Newport Bus Station", "lat": 50.698064039, "lon": -1.293845417}
+      ]
+    }
+  ]
+}

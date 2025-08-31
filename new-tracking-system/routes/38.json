@@ -1,0 +1,47 @@
+{
+  "route": {
+    "id": "38",
+    "name": "Route 38",
+    "color": "#4c5c66",
+    "type": "circular"
+  },
+  "directions": [
+    {
+      "stops": [
+        {"name": "Newport Bus Station", "lat": 50.698248078, "lon": -1.294536462},
+        {"name": "Drill Hall Road", "lat": 50.698551170, "lon": -1.298567353},
+        {"name": "Simeon Monument", "lat": 50.695316589, "lon": -1.303542721},
+        {"name": "Lukely Gardens", "lat": 50.694209549, "lon": -1.307919808},
+        {"name": "Christ The King College", "lat": 50.694336516, "lon": -1.309616919},
+        {"name": "Hinton Road", "lat": 50.695088049, "lon": -1.310483710},
+        {"name": "Marlborough Road", "lat": 50.696204180, "lon": -1.309136433},
+        {"name": "Wolfe Close", "lat": 50.697501901, "lon": -1.308083760},
+        {"name": "Kitbridge Road", "lat": 50.698879532, "lon": -1.308375007},
+        {"name": "Priors Walk", "lat": 50.699172117, "lon": -1.310707040},
+        {"name": "Machin Close", "lat": 50.698010089, "lon": -1.311899285},
+        {"name": "Millfield Road", "lat": 50.696943541, "lon": -1.312509560},
+        {"name": "Nightingale Road", "lat": 50.695510566, "lon": -1.313507437},
+        {"name": "Winchat Close", "lat": 50.694086490, "lon": -1.314490965},
+        {"name": "The Finches", "lat": 50.695315737, "lon": -1.318621478},
+        {"name": "Carisbrooke Retail Park", "lat": 50.696393975, "lon": -1.320007579},
+        {"name": "Alvington Manor View", "lat": 50.695335550, "lon": -1.320475947},
+        {"name": "Fox Place", "lat": 50.693343357, "lon": -1.317732613},
+        {"name": "The Waverley", "lat": 50.692211639, "lon": -1.315282786},
+        {"name": "Carisbrooke High Street", "lat": 50.691693928, "lon": -1.312883570},
+        {"name": "Cedar Hill", "lat": 50.691764703, "lon": -1.309640497},
+        {"name": "Carisbrooke, Castle Hill", "lat": 50.691073589, "lon": -1.308348177},
+        {"name": "Furze Brake", "lat": 50.691310479, "lon": -1.305838863},
+        {"name": "Chandler Close", "lat": 50.691675063, "lon": -1.303639095},
+        {"name": "Winston Road", "lat": 50.692065649, "lon": -1.301283174},
+        {"name": "Elm Grove", "lat": 50.692348368, "lon": -1.298942978},
+        {"name": "St Johns Road", "lat": 50.692119794, "lon": -1.295336224},
+        {"name": "Watergate Roundabout", "lat": 50.692284394, "lon": -1.294300258},
+        {"name": "Milne Way", "lat": 50.692109324, "lon": -1.292122630},
+        {"name": "Shide Path", "lat": 50.692633264, "lon": -1.289552213},
+        {"name": "Cypress Road", "lat": 50.694426986, "lon": -1.290233037},
+        {"name": "Clarence Road", "lat": 50.696170108, "lon": -1.291466864},
+        {"name": "Newport Bus Station (Terminus)", "lat": 50.698248078, "lon": -1.294536462}
+      ]
+    }
+  ]
+}

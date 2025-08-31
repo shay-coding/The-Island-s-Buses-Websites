@@ -1,0 +1,50 @@
+{
+  "route": {
+    "id": "SEA",
+    "name": "Route SEA",
+    "color": "#3d9936",
+    "type": "circular"
+  },
+  "directions": [
+    {
+      "stops": [
+        {"name": "Ryde Transport Interchange", "lat": 50.732402678, "lon": -1.158873385},
+        {"name": "Ashley Gardens", "lat": 50.731161870, "lon": -1.152689423},
+        {"name": "Canoe Lake", "lat": 50.729319969, "lon": -1.145909998},
+        {"name": "East Hill Road", "lat": 50.728695312, "lon": -1.149871845},
+        {"name": "Ryde, St. John's Church", "lat": 50.723558576, "lon": -1.147159692},
+        {"name": "Derwent Drive", "lat": 50.723495556, "lon": -1.142244871},
+        {"name": "Thornton Cross", "lat": 50.723221346, "lon": -1.137985619},
+        {"name": "Harcourt Sands", "lat": 50.724186616, "lon": -1.134751945},
+        {"name": "Puckpool Park, Entrance", "lat": 50.724645224, "lon": -1.128708188},
+        {"name": "Oakhill Road", "lat": 50.723943706, "lon": -1.122700136},
+        {"name": "Salterns Village", "lat": 50.722409983, "lon": -1.116590037},
+        {"name": "Salterns Road", "lat": 50.721595386, "lon": -1.114215745},
+        {"name": "Seaview, Seafield Road", "lat": 50.721529093, "lon": -1.111412032},
+        {"name": "St Peter's Church", "lat": 50.719537168, "lon": -1.112002161},
+        {"name": "Sophie Watson Gardens", "lat": 50.717744990, "lon": -1.113185961},
+        {"name": "Nettlestone Green", "lat": 50.713563974, "lon": -1.116960949},
+        {"name": "Elm Close", "lat": 50.712473045, "lon": -1.117305365},
+        {"name": "Priory Drive", "lat": 50.710638327, "lon": -1.117283158},
+        {"name": "The Bench", "lat": 50.710446977, "lon": -1.114734979},
+        {"name": "Greenham Drive", "lat": 50.711401123, "lon": -1.113515530},
+        {"name": "Seaview, Caws Avenue", "lat": 50.713249070, "lon": -1.111765993},
+        {"name": "The Hobbit", "lat": 50.714995039, "lon": -1.112710920},
+        {"name": "Solent View Close", "lat": 50.715823021, "lon": -1.113231994},
+        {"name": "Somerset Road", "lat": 50.718419298, "lon": -1.111640810},
+        {"name": "Seaview, Seafield Road", "lat": 50.721339299, "lon": -1.111288122},
+        {"name": "Salterns Road", "lat": 50.721370165, "lon": -1.114163324},
+        {"name": "Salterns Village", "lat": 50.722199970, "lon": -1.116230043},
+        {"name": "Oakhill Road", "lat": 50.723737183, "lon": -1.122765619},
+        {"name": "Puckpool Park, The Boathouse", "lat": 50.725110129, "lon": -1.127141138},
+        {"name": "Harcourt Sands", "lat": 50.723997687, "lon": -1.134741256},
+        {"name": "Thornton Cross", "lat": 50.723180783, "lon": -1.138581375},
+        {"name": "Derwent Drive", "lat": 50.723355038, "lon": -1.142446057},
+        {"name": "Ryde, St. John's Church", "lat": 50.723472990, "lon": -1.147482979},
+        {"name": "East Hill Road", "lat": 50.728724456, "lon": -1.150168859},
+        {"name": "Ashley Gardens", "lat": 50.731050225, "lon": -1.153414072},
+        {"name": "Ryde Transport Interchange (Terminus)", "lat": 50.732402678, "lon": -1.158873385}
+      ]
+    }
+  ]
+}
