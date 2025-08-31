@@ -1,0 +1,16 @@
+{
+  "duty": {
+    "id": "802",
+    "name": "Duty 802",
+    "bus": "",
+    "departures": [
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "06:40", "arrive_terminus": "08:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "08:40", "arrive_terminus": "10:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "10:40", "arrive_terminus": "12:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "17:40", "arrive_terminus": "19:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "19:40", "arrive_terminus": "21:29"},
+      {"route": "8", "start": "Newport Bus Station", "stop": "Ryde Transport Interchange", "depart_origin": "21:40", "arrive_terminus": "23:26"},
+      {"route": "8", "start": "Ryde Transport Interchange", "stop": "Newport Bus Station", "depart_origin": "23:40", "arrive_terminus": "01:29"}
+    ]
+  }
+}
