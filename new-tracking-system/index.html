@@ -516,7 +516,7 @@ body.dark-mode #routes-dropdown label:hover {
     <div class="bus-popup-content">
       <div class="bus-fleet-badge" id="busPopupFleetNumber">1522</div>
       <div class="bus-icon-container">
-        <img src="/tracking/liveries/default-bus.svg" alt="Bus" class="bus-icon" id="busPopupIcon">
+        <img src="liveries/default-bus.svg" alt="Bus" class="bus-icon" id="busPopupIcon">
       </div>
       <div class="bus-registration" id="busPopupRegistration">HW62 CNA</div>
     </div>
@@ -628,7 +628,7 @@ const busPopupIcon = document.getElementById('busPopupIcon');
 // Load fleet data with improved key normalization
 async function loadFleetData() {
   try {
-    const response = await fetch('/tracking/Fleet.json');
+    const response = await fetch('fleet.json');
     if (response.ok) {
       const fleetArray = await response.json();
       fleetData = {};
@@ -679,12 +679,12 @@ function showBusPopup(dutyId, routeNumber) {
     busPopupFleetNumber.textContent = fleetInfo.fleetNumber || assignedFleet;
     busPopupRegistration.textContent = fleetInfo.reg || 'Unknown Registration';
     
-    let imageSrc = '/tracking/liveries/default-bus.svg';
+    let imageSrc = 'liveries/default-bus.svg';
     if (fleetInfo.livery) {
-      if (fleetInfo.livery.startsWith('/tracking/liveries/')) {
+      if (fleetInfo.livery.startsWith('liveries/')) {
         imageSrc = fleetInfo.livery;
       } else {
-        imageSrc = `/tracking/liveries/${fleetInfo.livery}`;
+        imageSrc = `liveries/${fleetInfo.livery}`;
       }
     }
     
@@ -693,12 +693,12 @@ function showBusPopup(dutyId, routeNumber) {
   } else {
     busPopupFleetNumber.textContent = assignedFleet || 'Unknown Fleet';
     busPopupRegistration.textContent = 'Unknown Registration';
-    busPopupIcon.src = '/tracking/liveries/default-bus.svg';
+    busPopupIcon.src = 'liveries/default-bus.svg';
     busPopupIcon.alt = 'Bus';
   }
   
   busPopupIcon.onerror = function() {
-    this.src = '/tracking/liveries/default-bus.svg';
+    this.src = 'liveries/default-bus.svg';
     this.alt = 'Bus';
   };
   
@@ -969,7 +969,7 @@ async function loadAllRoutes(){
   debug('Loading routes...');
   for(const id of routeIds){
     try{
-      const res=await fetch(`/tracking/routes/${id}.json`);
+      const res=await fetch(`routes/${id}.json`);
       if (!res.ok) {
         console.warn(`Route ${id} returned ${res.status}`);
         continue;
@@ -988,7 +988,7 @@ async function loadAllRoutes(){
 // Load assignments
 async function loadAssignments(){
   try{ 
-    const res=await fetch('/tracking/assignments.json');
+    const res=await fetch('assignments.json');
     if (res.ok) {
       const rawAssignments = await res.json();
       busAssignments = {};
@@ -1008,7 +1008,7 @@ async function loadAssignments(){
 async function loadDuties(){
   debug('Loading duties...');
   try{
-    const res=await fetch('/tracking/duties/index.json');
+    const res=await fetch('duties/index.json');
     if (!res.ok) {
       debug('Failed to load duties index');
       return;
@@ -1018,7 +1018,7 @@ async function loadDuties(){
     
     for(const file of dutyFiles){
       try{
-        const r=await fetch(`/tracking/duties/${file}`);
+        const r=await fetch(`duties/${file}`);
         if (!r.ok) {
           console.warn(`Duty file ${file} returned ${r.status}`);
           continue;
@@ -1133,80 +1133,100 @@ async function loadDuties(){
   }
 }
 
-// Animate buses
-function updateBusesSmooth(){
-  // Clear existing markers
-  Object.values(busMarkersByRoute).forEach(arr=>arr.forEach(m=>map.removeLayer(m)));
-  
-  const now=new Date(); 
-  let nowMinutes = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60; 
-  if(nowMinutes < 300) nowMinutes += 1440;
-
-  const newMarkersByRoute={};
-  let activeBuses = 0;
+function getCurrentBusPosition(duty, nowMinutes) {
   const disappearAfterMinutes = 5;
-  
-  allDuties.forEach(duty=>{
-    const currentTrip = duty.trips.find(trip=> nowMinutes >= trip.depTime && nowMinutes <= trip.arrTime);
-    let pos, routeId, routeColor;
+  let pos = null;
+  let routeId = null;
+  let routeColor = null;
 
-    if(currentTrip){
-      const elapsed = nowMinutes - currentTrip.depTime;
-      const segmentIndex = Math.min(Math.floor(elapsed / currentTrip.timePerSegment), currentTrip.stops.length - 2);
-      const t = (elapsed % currentTrip.timePerSegment) / currentTrip.timePerSegment;
-      const from = currentTrip.stops[segmentIndex];
-      const to = currentTrip.stops[segmentIndex + 1];
-      
-      if (from && to) {
-        pos = [from.lat + (to.lat-from.lat)*t, from.lon + (to.lon-from.lon)*t];
-        routeId = currentTrip.routeId;
-        routeColor = currentTrip.routeColor;
-        activeBuses++;
-      }
-    } else {
-      const pastTrips = duty.trips.filter(trip => nowMinutes > trip.arrTime);
-      const futureTrips = duty.trips.filter(trip => nowMinutes < trip.depTime);
-      
-      if(pastTrips.length && futureTrips.length){
-        const lastTrip = pastTrips[pastTrips.length-1];
-        const lastStop = lastTrip.stops[lastTrip.stops.length-1];
-        pos = [lastStop.lat,lastStop.lon];
+  const currentTrip = duty.trips.find(
+    trip => nowMinutes >= trip.depTime && nowMinutes <= trip.arrTime
+  );
+
+  if (currentTrip) {
+    const elapsed = nowMinutes - currentTrip.depTime;
+    const segmentIndex = Math.min(
+      Math.floor(elapsed / currentTrip.timePerSegment),
+      currentTrip.stops.length - 2
+    );
+    const t = (elapsed % currentTrip.timePerSegment) / currentTrip.timePerSegment;
+
+    const from = currentTrip.stops[segmentIndex];
+    const to = currentTrip.stops[segmentIndex + 1];
+
+    if (from && to) {
+      pos = [
+        from.lat + (to.lat - from.lat) * t,
+        from.lon + (to.lon - from.lon) * t
+      ];
+      routeId = currentTrip.routeId;
+      routeColor = currentTrip.routeColor;
+    }
+  } else {
+
+    const pastTrips = duty.trips.filter(trip => nowMinutes > trip.arrTime);
+    const futureTrips = duty.trips.filter(trip => nowMinutes < trip.depTime);
+
+    if (pastTrips.length && futureTrips.length) {
+
+      const lastTrip = pastTrips[pastTrips.length - 1];
+      const lastStop = lastTrip.stops[lastTrip.stops.length - 1];
+      pos = [lastStop.lat, lastStop.lon];
+      routeId = lastTrip.routeId;
+      routeColor = lastTrip.routeColor;
+    } else if (pastTrips.length > 0) {
+
+      const lastTrip = pastTrips[pastTrips.length - 1];
+      const minutesSinceCompletion = nowMinutes - lastTrip.arrTime;
+
+      if (minutesSinceCompletion <= disappearAfterMinutes) {
+        const lastStop = lastTrip.stops[lastTrip.stops.length - 1];
+        pos = [lastStop.lat, lastStop.lon];
         routeId = lastTrip.routeId;
         routeColor = lastTrip.routeColor;
-        activeBuses++;
-      } else if(pastTrips.length > 0) {
-        const lastTrip = pastTrips[pastTrips.length-1];
-        const minutesSinceCompletion = nowMinutes - lastTrip.arrTime;
-        
-        if(minutesSinceCompletion <= disappearAfterMinutes) {
-          const lastStop = lastTrip.stops[lastTrip.stops.length-1];
-          pos = [lastStop.lat,lastStop.lon];
-          routeId = lastTrip.routeId;
-          routeColor = lastTrip.routeColor;
-          activeBuses++;
-        }
       }
     }
+  }
 
-    if(pos && routeId){
-      const marker = L.marker(pos,{
-        icon:createBusIcon(routeId, routeColor)
-      }).addTo(map);
-      
-      marker.on('click', function(e) {
-        e.originalEvent.preventDefault();
-        e.originalEvent.stopPropagation();
-        showBusPopup(duty.dutyId, routeId);
-      });
-      
-      if(!newMarkersByRoute[routeId]) newMarkersByRoute[routeId] = [];
-      newMarkersByRoute[routeId].push(marker);
-    }
-  });
-
-  Object.assign(busMarkersByRoute, newMarkersByRoute);
-  requestAnimationFrame(updateBusesSmooth);
+  if (pos && routeId) {
+    return { pos, routeId, routeColor };
+  } else {
+    return null;
+  }
 }
+
+function updateBuses() {
+  const now = new Date();
+  const nowMinutes = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
+
+  allDuties.forEach(duty => {
+    const result = getCurrentBusPosition(duty, nowMinutes);
+    if (!result) {
+      if (duty.marker) {
+        map.removeLayer(duty.marker);
+        duty.marker = null;
+      }
+      return;
+    }
+
+    const { pos, routeId, routeColor } = result;
+
+    if (!duty.marker) {
+      const marker = L.marker(pos, {
+        icon: createBusIcon(routeId, routeColor)
+      }).addTo(map);
+
+      marker.on('click', () => showBusPopup(duty.dutyId, routeId));
+      duty.marker = marker;
+    } else {
+      duty.marker.setLatLng(pos);
+    }
+
+  });
+}
+
+setInterval(updateBuses, 1000); // once per second
+
 
 // Initialize
 async function init(){
@@ -1215,7 +1235,6 @@ async function init(){
     await loadAssignments();
     await loadFleetData();
     await loadDuties();
-    updateBusesSmooth();
     debug('Initialization complete');
   } catch (error) {
     console.error('Initialization failed:', error);
