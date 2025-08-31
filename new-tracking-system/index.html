@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Live Bus Tracker</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+html, body, #map { height: 100%; margin: 0; padding: 0; }
+body { 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+  transition: background-color 0.3s ease;
+}
+
+/* Light mode (default) */
+body.light-mode {
+  background-color: #ffffff;
+  color: #232f3e;
+}
+
+body.light-mode .header { 
+  background: #ffffff; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+  border-bottom: 1px solid #e1e4e8;
+}
+
+body.light-mode .logo { 
+  color: #232f3e; 
+}
+
+body.light-mode #clock {
+  color: #586069;
+}
+
+body.light-mode #routes-dropdown { 
+  background: #ffffff; 
+  border: 1px solid #d1d5da; 
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12); 
+}
+
+body.light-mode #routes-dropdown label { 
+  color: #24292e; 
+}
+
+body.light-mode #routes-dropdown label:hover { 
+  background-color: #f6f8fa; 
+}
+
+/* Dark mode */
+body.dark-mode {
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+body.dark-mode .header { 
+  background: #161b22; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+  border-bottom: 1px solid #30363d;
+}
+
+body.dark-mode .logo { 
+  color: #ff9900; /* AWS Orange accent */
+}
+
+body.dark-mode #clock {
+  color: #8b949e;
+}
+
+body.dark-mode #routes-dropdown { 
+  background: #21262d; 
+  border: 1px solid #30363d; 
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5); 
+}
+
+body.dark-mode #routes-dropdown label { 
+  color: #e6edf3; 
+}
+
+body.dark-mode #routes-dropdown label:hover { 
+  background-color: #30363d; 
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: inherit;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+#clock-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#clock {
+  font-weight: 500;
+  font-size: 0.95rem;
+  min-width: 120px; /* consistent width for clock */
+  text-align: center;
+}
+
+.theme-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  padding: 0;
+  position: relative;
+  border: none;
+  background: #ccc;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.theme-toggle-slider {
+  width: 20px;
+  height: 20px;
+  background: #ff9900;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+}
+
+.dark-mode .theme-toggle {
+  background: #ff9900;
+}
+
+.dark-mode .theme-toggle-slider {
+  left: 22px;
+  background: #232f3e;
+}
+
+#toggle-routes-btn {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  color:#232f3e; 
+  padding:6px 12px; 
+  font-size:0.9rem; 
+  font-weight:600;
+  cursor:pointer; 
+  user-select:none; 
+  transition: all 0.2s ease;
+}
+
+#toggle-routes-btn:hover {
+  background:#e88b00;
+  transform: translateY(-1px);
+}
+
+#toggle-routes-btn:focus { 
+  outline:none; 
+  box-shadow:0 0 0 3px rgba(255, 153, 0, 0.3); 
+}
+
+#routes-dropdown { 
+  position:absolute; 
+  top:100%; 
+  right:0; 
+  width:180px; 
+  max-height:250px; 
+  overflow-y:auto; 
+  padding:8px; 
+  margin-top:8px; 
+  display:none; 
+  z-index:1100; 
+  border-radius:8px; 
+  transition: all 0.3s ease;
+}
+
+#routes-dropdown label { 
+  display:flex; 
+  align-items:center; 
+  margin-bottom:6px; 
+  cursor:pointer; 
+  user-select:none; 
+  font-size:0.9rem; 
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+#routes-dropdown label input { 
+  margin-right:8px; 
+  cursor:pointer; 
+}
+#map { position:absolute; top:64px; bottom:0; left:0; right:0; }
+
+/* Debug Panel Styles */
+.debug-panel {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  max-height: 200px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #00ff00;
+  font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-y: auto;
+  z-index: 2000;
+  display: none;
+  border: 1px solid #30363d;
+}
+
+.dark-mode .debug-panel {
+  background: rgba(13, 17, 23, 0.95);
+  border-color: #21262d;
+}
+
+.light-mode .debug-panel {
+  background: rgba(255, 255, 255, 0.95);
+  color: #232f3e;
+  border-color: #d1d5da;
+}
+
+.debug-panel.active {
+  display: block;
+}
+
+.debug-toggle {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #ff9900;
+  color: #232f3e;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 2001;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+}
+
+.debug-toggle:hover {
+  background: #e88b00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.4);
+}
+
+.debug-entry {
+  margin-bottom: 5px;
+  padding: 2px 0;
+  border-bottom: 1px solid #333;
+  font-size: 11px;
+}
+
+.light-mode .debug-entry {
+  border-bottom-color: #e1e4e8;
+}
+
+.debug-entry.success { color: #2ea043; }
+.debug-entry.error { color: #f85149; }
+.debug-entry.warning { color: #d1a846; }
+.debug-entry.info { 
+  color: #79c0ff; 
+}
+
+.light-mode .debug-entry.success { color: #1a7f37; }
+.light-mode .debug-entry.error { color: #cf222e; }
+.light-mode .debug-entry.warning { color: #9a6700; }
+.light-mode .debug-entry.info { color: #0969da; }
+
+/* Bus Info Popup Styles */
+.bus-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dark-mode .bus-popup-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.bus-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bus-popup {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 400px;
+  max-width: calc(100vw - 40px);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  position: relative;
+}
+
+.dark-mode .bus-popup {
+  background: #21262d;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.bus-popup-overlay.active .bus-popup {
+  transform: scale(1) translateY(0);
+}
+
+.bus-popup-header {
+  padding: 40px 30px 30px;
+  text-align: center;
+  position: relative;
+  background: #6c5ce7;
+  border-radius: 20px 20px 0 0;
+}
+
+@media (max-width: 480px) {
+  .bus-popup-header {
+    padding: 30px 20px 20px;
+  }
+  
+  .bus-popup-route {
+    font-size: 3rem;
+  }
+}
+
+.bus-popup-route {
+  font-size: 4rem;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bus-popup-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.bus-popup-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.bus-popup-content {
+  background: #ffffff;
+  text-align: center;
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .bus-popup-content {
+  background: #21262d;
+}
+
+.bus-fleet-badge {
+  background: #4a5568;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: inline-block;
+  margin: 20px 0;
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .bus-fleet-badge {
+  background: #ff9900;
+  color: #232f3e;
+}
+
+.bus-icon-container {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #ffffff;
+  position: relative;
+  margin: 20px 0;
+  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .bus-icon-container {
+  background: #0d1117;
+}
+
+@media (max-width: 480px) {
+  .bus-icon-container {
+    height: 120px;
+    margin: 15px 0;
+  }
+  
+  .bus-fleet-badge {
+    font-size: 1rem;
+    padding: 6px 16px;
+    margin: 15px 0;
+  }
+  
+  .bus-registration {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    margin: 15px 0;
+  }
+}
+
+.bus-icon {
+  max-width: calc(100% - 40px);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.bus-registration {
+  background: #4a5568;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 15px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  display: inline-block;
+  margin: 20px 0;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .bus-registration {
+  background: #ff9900;
+  color: #232f3e;
+}
+
+.demo-button {
+  display: none;
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="nav-container">
+    <a class="logo" href="/">Back to Homepage</a>
+    <div id="clock-container">
+      <div id="clock">Time: --:--:--</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <div class="theme-toggle-slider">☀️</div>
+      </button>
+      <button id="toggle-routes-btn" aria-expanded="false" aria-controls="routes-dropdown">Routes ▼</button>
+      <div id="routes-dropdown" role="region" aria-label="Toggle routes visibility"></div>
+    </div>
+  </div>
+</header>
+
+<div id="map"></div>
+
+<!-- Debug Panel -->
+<div class="debug-panel" id="debugPanel"></div>
+<button class="debug-toggle" id="debugToggle">Show Debug</button>
+
+<!-- Bus Info Popup -->
+<div class="bus-popup-overlay" id="busPopupOverlay">
+  <div class="bus-popup">
+    <div class="bus-popup-header" id="busPopupHeader">
+      <button class="bus-popup-close" id="busPopupClose">×</button>
+      <h1 class="bus-popup-route" id="busPopupRoute">N1</h1>
+    </div>
+    <div class="bus-popup-content">
+      <div class="bus-fleet-badge" id="busPopupFleetNumber">1522</div>
+      <div class="bus-icon-container">
+        <img src="/tracking/liveries/default-bus.svg" alt="Bus" class="bus-icon" id="busPopupIcon">
+      </div>
+      <div class="bus-registration" id="busPopupRegistration">HW62 CNA</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Initialize with light mode by default
+body.classList.add('light-mode');
+
+themeToggle.addEventListener('click', () => {
+  const isLight = body.classList.contains('light-mode');
+  
+  if (isLight) {
+    body.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    map.removeLayer(lightTiles);
+    map.addLayer(darkTiles);
+  } else {
+    body.classList.remove('dark-mode');
+    body.classList.add('light-mode');
+    map.removeLayer(darkTiles);
+    map.addLayer(lightTiles);
+  }
+});
+
+const map = L.map('map').setView([50.69, -1.31], 13);
+
+const lightTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+});
+
+const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 20
+});
+
+lightTiles.addTo(map); // start with light mode
+
+const routeIds = ["1A","1B","2","3","4","5","6","7A","7B","8","9A","9B","12","38","TNB","TDB","TSS","COA","SL","SEA","CH","N1","N3","N5","N7","N9"];
+const routeLayers = {}, routesData = {}, busMarkersByRoute = {};
+let busAssignments = {}, allDuties = [], fleetData = {};
+
+// Debug panel functionality
+const debugPanel = document.getElementById('debugPanel');
+const debugToggle = document.getElementById('debugToggle');
+let debugMessages = [];
+
+function addDebugMessage(message, type = 'info') {
+  const timestamp = new Date().toLocaleTimeString();
+  debugMessages.push({ timestamp, message, type });
+  
+  // Keep only last 50 messages to prevent memory issues
+  if (debugMessages.length > 50) {
+    debugMessages = debugMessages.slice(-50);
+  }
+  
+  updateDebugPanel();
+}
+
+function updateDebugPanel() {
+  debugPanel.innerHTML = debugMessages
+    .slice(-20) // Show only last 20 messages
+    .map(msg => `<div class="debug-entry ${msg.type}">[${msg.timestamp}] ${msg.message}</div>`)
+    .join('');
+  debugPanel.scrollTop = debugPanel.scrollHeight;
+}
+
+debugToggle.addEventListener('click', () => {
+  const isActive = debugPanel.classList.contains('active');
+  debugPanel.classList.toggle('active');
+  debugToggle.textContent = isActive ? 'Show Debug' : 'Hide Debug';
+});
+
+// Override console methods to capture logs
+const originalConsoleLog = console.log;
+const originalConsoleWarn = console.warn;
+const originalConsoleError = console.error;
+
+console.log = function(...args) {
+  originalConsoleLog.apply(console, args);
+  addDebugMessage(args.join(' '), 'info');
+};
+
+console.warn = function(...args) {
+  originalConsoleWarn.apply(console, args);
+  addDebugMessage(args.join(' '), 'warning');
+};
+
+console.error = function(...args) {
+  originalConsoleError.apply(console, args);
+  addDebugMessage(args.join(' '), 'error');
+};
+
+// Bus popup functionality
+const busPopupOverlay = document.getElementById('busPopupOverlay');
+const busPopupClose = document.getElementById('busPopupClose');
+const busPopupHeader = document.getElementById('busPopupHeader');
+const busPopupRoute = document.getElementById('busPopupRoute');
+const busPopupFleetNumber = document.getElementById('busPopupFleetNumber');
+const busPopupRegistration = document.getElementById('busPopupRegistration');
+const busPopupIcon = document.getElementById('busPopupIcon');
+
+// Load fleet data with improved key normalization
+async function loadFleetData() {
+  try {
+    const response = await fetch('/tracking/Fleet.json');
+    if (response.ok) {
+      const fleetArray = await response.json();
+      fleetData = {};
+      fleetArray.forEach(vehicle => {
+        if (vehicle.fleetNumber) {
+          const key = String(vehicle.fleetNumber);
+          fleetData[key] = vehicle;
+        }
+      });
+      console.log('Fleet data loaded:', Object.keys(fleetData).length, 'vehicles');
+    } else {
+      console.warn('Could not load Fleet.json');
+    }
+  } catch (error) {
+    console.error('Error loading fleet data:', error);
+  }
+}
+
+// Improved fleet lookup function
+function findFleetInfo(assignedFleet) {
+  if (!assignedFleet) return null;
+  
+  let fleetInfo = fleetData[assignedFleet];
+  if (fleetInfo) return fleetInfo;
+  
+  const stringKey = String(assignedFleet);
+  fleetInfo = fleetData[stringKey];
+  if (fleetInfo) return fleetInfo;
+  
+  const numericKey = String(Number(assignedFleet));
+  fleetInfo = fleetData[numericKey];
+  if (fleetInfo) return fleetInfo;
+  
+  return null;
+}
+
+// Show bus popup
+function showBusPopup(dutyId, routeNumber) {
+  const routeData = routesData[routeNumber];
+  const backgroundColor = routeData?.route?.color || '#6c5ce7';
+  const assignedFleet = busAssignments[dutyId];
+  const fleetInfo = findFleetInfo(assignedFleet);
+  
+  busPopupRoute.textContent = routeNumber;
+  busPopupHeader.style.background = backgroundColor;
+  
+  if (fleetInfo) {
+    busPopupFleetNumber.textContent = fleetInfo.fleetNumber || assignedFleet;
+    busPopupRegistration.textContent = fleetInfo.reg || 'Unknown Registration';
+    
+    let imageSrc = '/tracking/liveries/default-bus.svg';
+    if (fleetInfo.livery) {
+      if (fleetInfo.livery.startsWith('/tracking/liveries/')) {
+        imageSrc = fleetInfo.livery;
+      } else {
+        imageSrc = `/tracking/liveries/${fleetInfo.livery}`;
+      }
+    }
+    
+    busPopupIcon.src = imageSrc;
+    busPopupIcon.alt = `Bus ${fleetInfo.fleetNumber || assignedFleet}`;
+  } else {
+    busPopupFleetNumber.textContent = assignedFleet || 'Unknown Fleet';
+    busPopupRegistration.textContent = 'Unknown Registration';
+    busPopupIcon.src = '/tracking/liveries/default-bus.svg';
+    busPopupIcon.alt = 'Bus';
+  }
+  
+  busPopupIcon.onerror = function() {
+    this.src = '/tracking/liveries/default-bus.svg';
+    this.alt = 'Bus';
+  };
+  
+  busPopupOverlay.classList.add('active');
+}
+
+// Close popup
+function closeBusPopup() {
+  busPopupOverlay.classList.remove('active');
+}
+
+// Event listeners
+busPopupClose.addEventListener('click', closeBusPopup);
+busPopupOverlay.addEventListener('click', (e) => {
+  if (e.target === busPopupOverlay) {
+    closeBusPopup();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && busPopupOverlay.classList.contains('active')) {
+    closeBusPopup();
+  }
+});
+
+function debug(msg) {
+  console.log(msg);
+  addDebugMessage(msg, 'success');
+}
+
+// Helpers
+function timeToMinutes(t){ 
+  if (!t || typeof t !== 'string') return null;
+  const parts = t.split(':');
+  if (parts.length !== 2) return null;
+  const [h,m] = parts.map(Number); 
+  if (isNaN(h) || isNaN(m)) return null;
+  return h*60+m; 
+}
+
+function createBusIcon(routeNumber, routeColor){ 
+  return L.divIcon({
+    html:`<div style="width:24px;height:24px;border-radius:12px;background-color:${routeColor};border:2px solid white;color:white;text-align:center;font-weight:bold;line-height:24px;font-size:12px;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.3);">${routeNumber}</div>`,
+    className:'bus-marker', 
+    iconSize:[24,24], 
+    iconAnchor:[12,12]
+  }); 
+}
+
+function drawRouteAndStops(color,direction,routeId){ 
+  if(!routeLayers[routeId]) routeLayers[routeId]=L.layerGroup().addTo(map);
+  const latlngs=direction.stops.map(s=>[s.lat,s.lon]);
+  L.polyline(latlngs,{color,weight:4,opacity:0.7}).addTo(routeLayers[routeId]);
+  
+  // Create stop markers that are only visible at higher zoom levels
+  direction.stops.forEach(s=>{
+    const stopMarker = L.circleMarker([s.lat,s.lon],{
+      radius:5,
+      fillColor:'#888',
+      color:'#444',
+      weight:1,
+      fillOpacity:0.9
+    }).addTo(routeLayers[routeId]);
+    
+    // Hide stops at zoom levels below 15
+    const updateStopVisibility = () => {
+      const zoom = map.getZoom();
+      if (zoom < 15) {
+        stopMarker.setStyle({ fillOpacity: 0, opacity: 0 });
+      } else {
+        stopMarker.setStyle({ fillOpacity: 0.9, opacity: 1 });
+      }
+    };
+    
+    // Set initial visibility
+    updateStopVisibility();
+    
+    // Update visibility when zoom changes
+    map.on('zoomend', updateStopVisibility);
+  });
+}
+
+// Clock
+function updateClock(){ 
+  const now=new Date(); 
+  document.getElementById('clock').textContent=`Time: ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`; 
+}
+setInterval(updateClock,1000); 
+updateClock();
+
+// Routes dropdown
+const toggleRoutesBtn=document.getElementById('toggle-routes-btn');
+const routesDropdown=document.getElementById('routes-dropdown');
+toggleRoutesBtn.addEventListener('click',()=>{
+  const expanded=toggleRoutesBtn.getAttribute('aria-expanded')==='true';
+  routesDropdown.style.display=expanded?'none':'block';
+  toggleRoutesBtn.setAttribute('aria-expanded',expanded?'false':'true');
+  toggleRoutesBtn.textContent=expanded?'Routes ▼':'Routes ▲';
+});
+
+function populateRoutesDropdown(){
+  routesDropdown.innerHTML='';
+  routeIds.forEach(routeId=>{
+    const label=document.createElement('label');
+    const checkbox=document.createElement('input'); 
+    checkbox.type='checkbox'; 
+    checkbox.checked=true; 
+    checkbox.dataset.routeId=routeId;
+    checkbox.addEventListener('change',e=>{
+      const id=e.target.dataset.routeId;
+      if(routeLayers[id]) map[e.target.checked?'addLayer':'removeLayer'](routeLayers[id]);
+    });
+    label.appendChild(checkbox); 
+    label.appendChild(document.createTextNode(routeId));
+    routesDropdown.appendChild(label);
+  });
+}
+populateRoutesDropdown();
+
+// Enhanced direction matching for circular routes
+function findMatchingDirection(routeData, depStart, depStop) {
+  if (!routeData?.directions) {
+    console.log(`No directions found for route`);
+    return null;
+  }
+  
+  const cleanStart = depStart.trim().toLowerCase();
+  const cleanStop = depStop.trim().toLowerCase();
+  
+  console.log(`\n=== DIRECTION MATCHING DEBUG ===`);
+  console.log(`Route has ${routeData.directions.length} directions`);
+  console.log(`Looking for: "${depStart}" -> "${depStop}"`);
+  console.log(`Cleaned: "${cleanStart}" -> "${cleanStop}"`);
+  
+  // Check if this might be a circular route
+  const isCircularRoute = cleanStart === cleanStop;
+  console.log(`Is circular route (same start/end): ${isCircularRoute}`);
+  
+  // Always try all matching strategies, not just circular
+  let bestMatch = null;
+  let bestScore = 0;
+  let matchDetails = [];
+  
+  routeData.directions.forEach((direction, dirIndex) => {
+    if (!direction.stops || direction.stops.length === 0) {
+      console.log(`Direction ${dirIndex}: No stops`);
+      return;
+    }
+    
+    console.log(`\nDirection ${dirIndex}: ${direction.stops.length} stops`);
+    const stops = direction.stops.map(s => ({
+      ...s,
+      cleanName: (s.name || '').trim().toLowerCase()
+    }));
+    
+    // Log all stops in this direction
+    console.log(`Stops: ${stops.map(s => s.cleanName).join(' -> ')}`);
+    
+    let score = 0;
+    let startFound = false;
+    let endFound = false;
+    let matchReasons = [];
+    
+    // Strategy 1: Exact stop name matching anywhere in route
+    const startMatches = stops.filter(s => 
+      s.cleanName.includes(cleanStart) || 
+      cleanStart.includes(s.cleanName) ||
+      s.cleanName === cleanStart
+    );
+    
+    const endMatches = stops.filter(s => 
+      s.cleanName.includes(cleanStop) || 
+      cleanStop.includes(s.cleanName) ||
+      s.cleanName === cleanStop
+    );
+    
+    if (startMatches.length > 0) {
+      startFound = true;
+      score += startMatches.length;
+      matchReasons.push(`Start found: ${startMatches.map(s => s.cleanName).join(', ')}`);
+    }
+    
+    if (endMatches.length > 0) {
+      endFound = true;
+      score += endMatches.length;
+      matchReasons.push(`End found: ${endMatches.map(s => s.cleanName).join(', ')}`);
+    }
+    
+    // Strategy 2: For circular routes, any matching stop gets bonus points
+    if (isCircularRoute && (startMatches.length > 0 || endMatches.length > 0)) {
+      score += 5; // High bonus for circular routes
+      matchReasons.push('Circular route bonus');
+    }
+    
+    // Strategy 3: First/last stop matching (traditional linear routes)
+    const firstStop = stops[0].cleanName;
+    const lastStop = stops[stops.length - 1].cleanName;
+    
+    if (firstStop.includes(cleanStart) || cleanStart.includes(firstStop)) {
+      score += 2;
+      matchReasons.push(`First stop match: ${firstStop}`);
+    }
+    
+    if (lastStop.includes(cleanStop) || cleanStop.includes(lastStop)) {
+      score += 2;
+      matchReasons.push(`Last stop match: ${lastStop}`);
+    }
+    
+    // Strategy 4: Partial string matching with more flexibility
+    const partialStartMatches = stops.filter(s => {
+      const stopWords = s.cleanName.split(/\s+/);
+      const startWords = cleanStart.split(/\s+/);
+      return stopWords.some(sw => startWords.some(stw => 
+        (sw.length > 2 && stw.length > 2) && (sw.includes(stw) || stw.includes(sw))
+      ));
+    });
+    
+    const partialEndMatches = stops.filter(s => {
+      const stopWords = s.cleanName.split(/\s+/);
+      const endWords = cleanStop.split(/\s+/);
+      return stopWords.some(sw => endWords.some(ew => 
+        (sw.length > 2 && ew.length > 2) && (sw.includes(ew) || ew.includes(sw))
+      ));
+    });
+    
+    if (partialStartMatches.length > 0 && !startFound) {
+      score += 1;
+      matchReasons.push(`Partial start match: ${partialStartMatches.map(s => s.cleanName).join(', ')}`);
+    }
+    
+    if (partialEndMatches.length > 0 && !endFound) {
+      score += 1;
+      matchReasons.push(`Partial end match: ${partialEndMatches.map(s => s.cleanName).join(', ')}`);
+    }
+    
+    console.log(`Direction ${dirIndex} score: ${score}`);
+    console.log(`Match reasons: ${matchReasons.join('; ')}`);
+    
+    matchDetails.push({
+      dirIndex,
+      score,
+      reasons: matchReasons,
+      direction
+    });
+    
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = direction;
+    }
+  });
+  
+  console.log(`\nBest match: Direction with score ${bestScore}`);
+  console.log('All matches:', matchDetails.map(m => `Dir${m.dirIndex}:${m.score}`).join(', '));
+  
+  // If we found a good match, return it
+  if (bestMatch && bestScore > 0) {
+    console.log('Returning best match');
+    return bestMatch;
+  }
+  
+  // Aggressive fallback: just use the first direction
+  console.log('No good match found, using first direction as fallback');
+  return routeData.directions[0] || null;
+}
+
+// Load routes
+async function loadAllRoutes(){ 
+  debug('Loading routes...');
+  for(const id of routeIds){
+    try{
+      const res=await fetch(`/tracking/routes/${id}.json`);
+      if (!res.ok) {
+        console.warn(`Route ${id} returned ${res.status}`);
+        continue;
+      }
+      const data=await res.json();
+      routesData[id]=data;
+      const color=data.route?.color||'#000';
+      data.directions?.forEach(d=>drawRouteAndStops(color,d,id));
+    }catch(e){ 
+      console.error(`Failed route ${id}:`,e); 
+    }
+  }
+  debug(`Loaded ${Object.keys(routesData).length} routes`);
+}
+
+// Load assignments
+async function loadAssignments(){
+  try{ 
+    const res=await fetch('/tracking/assignments.json');
+    if (res.ok) {
+      const rawAssignments = await res.json();
+      busAssignments = {};
+      Object.keys(rawAssignments).forEach(key => {
+        busAssignments[key] = rawAssignments[key];
+      });
+      debug(`Loaded ${Object.keys(busAssignments).length} assignments`);
+    } else {
+      console.warn('assignments.json returned status:', res.status);
+    }
+  }catch(e){ 
+    console.error('Failed assignments.json:',e); 
+  }
+}
+
+// Load duties
+async function loadDuties(){
+  debug('Loading duties...');
+  try{
+    const res=await fetch('/tracking/duties/index.json');
+    if (!res.ok) {
+      debug('Failed to load duties index');
+      return;
+    }
+    const dutyFiles=await res.json();
+    debug(`Found ${dutyFiles.length} duty files`);
+    
+    for(const file of dutyFiles){
+      try{
+        const r=await fetch(`/tracking/duties/${file}`);
+        if (!r.ok) {
+          console.warn(`Duty file ${file} returned ${r.status}`);
+          continue;
+        }
+        const duty=await r.json();
+        
+        if (!duty?.duty?.id || !duty?.duty?.departures) {
+          console.warn(`Invalid duty structure in ${file}:`, duty);
+          continue;
+        }
+
+        console.log(`\n==== PROCESSING DUTY ${duty.duty.id} ====`);
+        const trips = [];
+        
+        duty.duty.departures.forEach((dep, idx) => {
+          console.log(`\nDeparture ${idx + 1}/${duty.duty.departures.length}:`);
+          console.log(`Route: ${dep.route}, Start: "${dep.start}", Stop: "${dep.stop}"`);
+          console.log(`Times: ${dep.depart_origin} -> ${dep.arrive_terminus}`);
+          
+          if (!dep.route || !dep.start || !dep.stop || !dep.depart_origin || !dep.arrive_terminus) {
+            console.warn(`❌ Invalid departure ${idx} in duty ${duty.duty.id}:`, dep);
+            return;
+          }
+
+          const routeData = routesData[dep.route];
+          if(!routeData || !routeData.directions) {
+            console.warn(`❌ No route data for ${dep.route} in duty ${duty.duty.id}`);
+            return;
+          }
+          
+          console.log(`✅ Route data found for ${dep.route}, ${routeData.directions.length} directions`);
+
+          // Use enhanced direction matching with detailed logging
+          const direction = findMatchingDirection(routeData, dep.start, dep.stop);
+          
+          if(!direction) {
+            console.warn(`❌ No matching direction for ${dep.route}: ${dep.start} -> ${dep.stop}`);
+            console.log('Available directions:');
+            routeData.directions.forEach((d, i) => {
+              if (d.stops && d.stops.length > 0) {
+                console.log(`  Direction ${i}: ${d.stops[0].name} -> ${d.stops[d.stops.length-1].name}`);
+              }
+            });
+            return;
+          }
+          
+          console.log(`✅ Direction found with ${direction.stops.length} stops`);
+
+          let departMinutes = timeToMinutes(dep.depart_origin);
+          let arriveMinutes = timeToMinutes(dep.arrive_terminus);
+          
+          if (departMinutes === null || arriveMinutes === null) {
+            console.warn(`❌ Invalid time format in duty ${duty.duty.id}:`, dep.depart_origin, dep.arrive_terminus);
+            return;
+          }
+          
+          // Handle day wraparound
+          if(arriveMinutes < departMinutes) arriveMinutes += 1440;
+          if (departMinutes < 300) departMinutes += 1440;
+          if (arriveMinutes < 300) arriveMinutes += 1440;
+
+          const totalMinutes = arriveMinutes - departMinutes;
+          if(totalMinutes <= 0) {
+            console.warn(`❌ Invalid trip duration in duty ${duty.duty.id}: ${totalMinutes} minutes`);
+            return;
+          }
+          
+          console.log(`✅ Trip duration: ${totalMinutes} minutes`);
+
+          const trip = {
+            routeId: dep.route,
+            routeColor: routeData.route?.color||'#000',
+            stops: direction.stops.map(s=>({lat:s.lat, lon:s.lon})),
+            depTime: departMinutes,
+            arrTime: arriveMinutes,
+            timePerSegment: totalMinutes/(direction.stops.length-1)
+          };
+          
+          trips.push(trip);
+          console.log(`✅ Trip added successfully`);
+        });
+
+        if(trips.length > 0){
+          allDuties.push({ dutyId: duty.duty.id, trips });
+          console.log(`✅ Added duty ${duty.duty.id} with ${trips.length} trips`);
+        } else {
+          console.warn(`❌ No valid trips found for duty ${duty.duty.id}`);
+        }
+      }catch(e){ 
+        console.error(`❌ Failed ${file}:`,e); 
+      }
+    }
+    debug(`✅ Loaded ${allDuties.length} duties with trips total`);
+    
+    // Summary of loaded data
+    const totalTrips = allDuties.reduce((sum, duty) => sum + duty.trips.length, 0);
+    const routeCounts = {};
+    allDuties.forEach(duty => {
+      duty.trips.forEach(trip => {
+        routeCounts[trip.routeId] = (routeCounts[trip.routeId] || 0) + 1;
+      });
+    });
+    
+    console.log(`\n==== SUMMARY ====`);
+    console.log(`Total duties: ${allDuties.length}`);
+    console.log(`Total trips: ${totalTrips}`);
+    console.log(`Routes with trips:`, Object.keys(routeCounts).sort());
+    console.log(`Trip counts by route:`, routeCounts);
+    
+  }catch(e){ 
+    console.error('❌ Failed duties index.json:',e); 
+  }
+}
+
+// Animate buses
+function updateBusesSmooth(){
+  // Clear existing markers
+  Object.values(busMarkersByRoute).forEach(arr=>arr.forEach(m=>map.removeLayer(m)));
+  
+  const now=new Date(); 
+  let nowMinutes = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60; 
+  if(nowMinutes < 300) nowMinutes += 1440;
+
+  const newMarkersByRoute={};
+  let activeBuses = 0;
+  const disappearAfterMinutes = 5;
+  
+  allDuties.forEach(duty=>{
+    const currentTrip = duty.trips.find(trip=> nowMinutes >= trip.depTime && nowMinutes <= trip.arrTime);
+    let pos, routeId, routeColor;
+
+    if(currentTrip){
+      const elapsed = nowMinutes - currentTrip.depTime;
+      const segmentIndex = Math.min(Math.floor(elapsed / currentTrip.timePerSegment), currentTrip.stops.length - 2);
+      const t = (elapsed % currentTrip.timePerSegment) / currentTrip.timePerSegment;
+      const from = currentTrip.stops[segmentIndex];
+      const to = currentTrip.stops[segmentIndex + 1];
+      
+      if (from && to) {
+        pos = [from.lat + (to.lat-from.lat)*t, from.lon + (to.lon-from.lon)*t];
+        routeId = currentTrip.routeId;
+        routeColor = currentTrip.routeColor;
+        activeBuses++;
+      }
+    } else {
+      const pastTrips = duty.trips.filter(trip => nowMinutes > trip.arrTime);
+      const futureTrips = duty.trips.filter(trip => nowMinutes < trip.depTime);
+      
+      if(pastTrips.length && futureTrips.length){
+        const lastTrip = pastTrips[pastTrips.length-1];
+        const lastStop = lastTrip.stops[lastTrip.stops.length-1];
+        pos = [lastStop.lat,lastStop.lon];
+        routeId = lastTrip.routeId;
+        routeColor = lastTrip.routeColor;
+        activeBuses++;
+      } else if(pastTrips.length > 0) {
+        const lastTrip = pastTrips[pastTrips.length-1];
+        const minutesSinceCompletion = nowMinutes - lastTrip.arrTime;
+        
+        if(minutesSinceCompletion <= disappearAfterMinutes) {
+          const lastStop = lastTrip.stops[lastTrip.stops.length-1];
+          pos = [lastStop.lat,lastStop.lon];
+          routeId = lastTrip.routeId;
+          routeColor = lastTrip.routeColor;
+          activeBuses++;
+        }
+      }
+    }
+
+    if(pos && routeId){
+      const marker = L.marker(pos,{
+        icon:createBusIcon(routeId, routeColor)
+      }).addTo(map);
+      
+      marker.on('click', function(e) {
+        e.originalEvent.preventDefault();
+        e.originalEvent.stopPropagation();
+        showBusPopup(duty.dutyId, routeId);
+      });
+      
+      if(!newMarkersByRoute[routeId]) newMarkersByRoute[routeId] = [];
+      newMarkersByRoute[routeId].push(marker);
+    }
+  });
+
+  Object.assign(busMarkersByRoute, newMarkersByRoute);
+  requestAnimationFrame(updateBusesSmooth);
+}
+
+// Initialize
+async function init(){
+  try {
+    await loadAllRoutes();
+    await loadAssignments();
+    await loadFleetData();
+    await loadDuties();
+    updateBusesSmooth();
+    debug('Initialization complete');
+  } catch (error) {
+    console.error('Initialization failed:', error);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
