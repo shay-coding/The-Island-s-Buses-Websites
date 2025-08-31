@@ -887,34 +887,11 @@ function findMatchingDirection(routeData, depStart, depStop) {
       matchReasons.push(`End found: ${endMatches.map(s => s.cleanName).join(', ')}`);
     }
     
-    // Strategy 2: For circular routes, any matching stop gets bonus points
+    // For circular routes, any matching stop gets bonus points
     if (isCircularRoute && (startMatches.length > 0 || endMatches.length > 0)) {
       score += 5; // High bonus for circular routes
       matchReasons.push('Circular route bonus');
     }
-    
-    // Strategy 3: First/last stop matching (traditional linear routes)
-    const firstStop = stops[0].cleanName;
-    const lastStop = stops[stops.length - 1].cleanName;
-    
-    if (firstStop.includes(cleanStart) || cleanStart.includes(firstStop)) {
-      score += 2;
-      matchReasons.push(`First stop match: ${firstStop}`);
-    }
-    
-    if (lastStop.includes(cleanStop) || cleanStop.includes(lastStop)) {
-      score += 2;
-      matchReasons.push(`Last stop match: ${lastStop}`);
-    }
-    
-    // Strategy 4: Partial string matching with more flexibility
-    const partialStartMatches = stops.filter(s => {
-      const stopWords = s.cleanName.split(/\s+/);
-      const startWords = cleanStart.split(/\s+/);
-      return stopWords.some(sw => startWords.some(stw => 
-        (sw.length > 2 && stw.length > 2) && (sw.includes(stw) || stw.includes(sw))
-      ));
-    });
     
     const partialEndMatches = stops.filter(s => {
       const stopWords = s.cleanName.split(/\s+/);
