@@ -3,81 +3,630 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plan Your Journey</title>
+<title>Plan Your Journey - The Island's Buses</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background: #fff; }
-  header { background: #2b7cae; padding: 10px 20px; display: flex; align-items: center; }
-  header img { height: 40px; }
-  main { padding: 20px; max-width: 800px; margin: 0 auto; }
-  h1 { color: #2b7cae; }
-
-  label { display: block; margin: 15px 0 5px; color: #333; }
-  input[type="text"], input[type="time"], button { 
-    padding: 10px; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px; 
-    margin-bottom: 10px;
-    font-size: 16px;
+  /* Custom font import */
+  @font-face {
+    font-family: 'Abadi';
+    src: url('abadi-mt-std.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
   }
-  button { background: #2b7cae; color: #fff; cursor: pointer; border: none; }
-  button:hover { background: #1d5d8a; }
-
-  .results { margin-top: 20px; }
-  .journey { border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; background: #f9f9f9; padding: 15px; }
-  .leg { border-left: 5px solid #2b7cae; padding-left: 10px; margin-bottom: 10px; }
-  .leg strong { font-size: 16px; }
-  .leg span { display: block; margin: 2px 0; }
-
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --primary-green: #42B38A;
+    --secondary-green: #ADEACF;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --text-dark: #141414;
+    --text-light: #6b7280;
+  }
+  
+  body {
+    font-family: 'Abadi', 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--white);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Header */
+  .header {
+    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+  
+  .header.scrolled {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    text-decoration: none;
+  }
+  
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .nav-menu a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-menu a:hover, .nav-menu a.active {
+    color: var(--primary-green);
+    background-color: var(--secondary-green);
+  }
+  
+  .plan-journey-btn {
+    background: var(--primary-green);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(66, 179, 138, 0.3);
+  }
+  
+  .plan-journey-btn:hover {
+    background: #369970;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66, 179, 138, 0.4);
+  }
+  
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-green);
+  }
+  
+  /* Main Content */
+  main {
+    margin-top: 100px;
+    padding: 3rem 0;
+    min-height: calc(100vh - 400px);
+  }
+  
+  .planner-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .planner-form {
+    background: var(--light-gray);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  
+  .autocomplete-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  input[type="text"], input[type="time"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Abadi', 'Inter', sans-serif;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="text"]:focus, input[type="time"]:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(66, 179, 138, 0.1);
+  }
+  
   .autocomplete-items {
     position: absolute;
-    border: 1px solid #ccc;
+    border: 2px solid var(--primary-green);
     border-top: none;
     z-index: 99;
-    background-color: #fff;
-    max-height: 200px;
+    background-color: var(--white);
+    max-height: 250px;
     overflow-y: auto;
-    width: 300px;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
+  
   .autocomplete-items div {
-    padding: 10px;
+    padding: 0.75rem 1rem;
     cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
   }
+  
   .autocomplete-items div:hover {
-    background-color: #2b7cae;
-    color: #fff;
+    background-color: var(--secondary-green);
+    color: var(--text-dark);
   }
-  .autocomplete-wrapper { position: relative; display: inline-block; }
+  
+  .autocomplete-items div strong {
+    color: var(--primary-green);
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    background: var(--primary-green);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(66, 179, 138, 0.3);
+    font-family: 'Abadi', 'Inter', sans-serif;
+  }
+  
+  button[type="submit"]:hover:not(:disabled) {
+    background: #369970;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66, 179, 138, 0.4);
+  }
+  
+  button[type="submit"]:disabled {
+    background: var(--text-light);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* Results */
+  .results {
+    margin-top: 2rem;
+  }
+  
+  .journey {
+    background: var(--white);
+    border: 2px solid var(--secondary-green);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .journey:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-color: var(--primary-green);
+  }
+  
+  .journey.expanded {
+    border-color: var(--primary-green);
+    background: var(--light-gray);
+  }
+  
+  .journey-header {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--secondary-green);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .journey-header:hover {
+    color: var(--primary-green);
+  }
+  
+  .expand-icon {
+    font-size: 1.3rem;
+    color: var(--primary-green);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .journey.expanded .expand-icon {
+    transform: rotate(180deg);
+  }
+  
+  .journey-details {
+    display: none;
+    margin-top: 1rem;
+  }
+  
+  .journey.expanded .journey-details {
+    display: block;
+  }
+  
+  .stop-list {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .stop-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-left: 3px solid var(--primary-green);
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    position: relative;
+  }
+  
+  .stop-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: 100%;
+    width: 3px;
+    height: 100%;
+    background: var(--secondary-green);
+  }
+  
+  .stop-item.transfer-stop {
+    border-left-color: #ff9800;
+    font-weight: 600;
+    background: #fff3e0;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+  
+  .stop-time {
+    font-weight: 600;
+    color: var(--primary-green);
+    min-width: 60px;
+    margin-right: 1rem;
+  }
+  
+  .stop-name {
+    flex: 1;
+    color: var(--text-dark);
+  }
+  
+  .stop-icon {
+    margin-right: 0.5rem;
+  }
+  
+  .leg {
+    background: var(--light-gray);
+    border-left: 5px solid var(--primary-green);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+  }
+  
+  .leg strong {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary-green);
+  }
+  
+  .leg span {
+    display: block;
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+  }
+  
+  .transfer {
+    background: var(--secondary-green);
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+  }
+  
+  .loading {
+    color: var(--text-light);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .error {
+    color: #dc2626;
+    padding: 1rem;
+    background: #fee2e2;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #fca5a5;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    background: var(--light-gray);
+    border-radius: 12px;
+    color: var(--text-light);
+  }
+  
+  /* Footer */
+  .footer {
+    background: var(--primary-green);
+    color: var(--white);
+    padding: 3rem 0 1rem;
+    margin-top: 3rem;
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-section h3 {
+    margin-bottom: 1rem;
+    color: var(--white);
+  }
+  
+  .footer-section ul {
+    list-style: none;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section a {
+    color: var(--secondary-green);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-section a:hover {
+    color: var(--white);
+  }
+  
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 1rem;
+    text-align: center;
+    color: var(--secondary-green);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .nav-menu {
+      position: fixed;
+      top: 80px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 80px);
+      background: var(--white);
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 2rem;
+      transition: left 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu.active {
+      left: 0;
+    }
+    
+    .mobile-menu-btn {
+      display: block;
+    }
+    
+    .plan-journey-btn {
+      margin-top: 1rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .planner-form {
+      padding: 1.5rem;
+    }
+    
+    main {
+      margin-top: 80px;
+      padding: 2rem 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 15px;
+    }
+    
+    h1 {
+      font-size: 1.75rem;
+    }
+    
+    .planner-form {
+      padding: 1rem;
+    }
+    
+    .journey {
+      padding: 1rem;
+    }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="index.html">
-    <img src="/logo.png" alt="Logo">
-  </a>
+<!-- Header -->
+<header class="header" id="header">
+  <div class="container">
+    <nav class="nav-container">
+      <a class="logo" href="index.html"><img alt="The Island's Buses Logo" src="logo.png" style="height:40px;"/></a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a class="nav-link" href="newlayout.html">Home</a></li>
+        <li><a class="nav-link" href="routes.html">Routes</a></li>
+        <li><a class="nav-link" href="newlayout.html#tickets">Tickets</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="newlayout.html#service-updates">Service Updates</a></li>
+        <li><a class="nav-link" href="newlayout.html#contact">Contact</a></li>
+        <li><a class="plan-journey-btn active" href="plan.html">Plan Your Journey</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    </nav>
+  </div>
 </header>
 
+<!-- Main Content -->
 <main>
-  <h1>Plan Your Journey</h1>
+  <div class="container">
+    <div class="planner-container">
+      <h1>Plan Your Journey</h1>
+      
+      <form class="planner-form" id="plannerForm">
+        <div class="form-group">
+          <label for="startStop">From</label>
+          <div class="autocomplete-wrapper">
+            <input type="text" id="startStop" placeholder="Enter start stop name..." required>
+          </div>
+        </div>
 
-  <div class="autocomplete-wrapper">
-    <label for="startStop">Start Stop:</label>
-    <input type="text" id="startStop" placeholder="Type stop name...">
+        <div class="form-group">
+          <label for="endStop">To</label>
+          <div class="autocomplete-wrapper">
+            <input type="text" id="endStop" placeholder="Enter destination stop name..." required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="time">Departing After (optional)</label>
+          <input type="time" id="time">
+        </div>
+
+        <button type="submit" id="planBtn">Find Journeys</button>
+      </form>
+
+      <div class="results" id="results"></div>
+    </div>
   </div>
-
-  <div class="autocomplete-wrapper">
-    <label for="endStop">End Stop:</label>
-    <input type="text" id="endStop" placeholder="Type stop name...">
-  </div>
-
-  <label for="time">After Time (optional):</label>
-  <input type="time" id="time">
-
-  <button id="planBtn">Find Journeys</button>
-
-  <div class="results" id="results"></div>
 </main>
 
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="newlayout.html">Home</a></li>
+          <li><a href="routes.html">Routes</a></li>
+          <li><a href="newlayout.html#tickets">Tickets</a></li>
+          <li><a href="newlayout.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="accessibility.html">Accessibility Statement</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="lost.html">Lost Property</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#">Mobile App</a></li>
+          <li><a href="#">GoBus Smartcard</a></li>
+          <li><a href="#">Group Travel</a></li>
+          <li><a href="#">School Transport</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 South Coast Transport Solutions Ltd. All rights reserved. | Connecting communities across the South Coast</p>
+    </div>
+  </div>
+</footer>
+
 <script>
+// Mobile menu toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navMenu = document.getElementById('navMenu');
+mobileMenuBtn.addEventListener('click', () => {
+  navMenu.classList.toggle('active');
+  mobileMenuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
+});
+
+// Header scroll effect
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// Journey Planner Logic
 let allStops = [];
 const routes = [];
 const routeFiles = [
@@ -85,12 +634,20 @@ const routeFiles = [
   "12","38","TNB","TDB","TSS","SEA","COA","SL","CH"
 ];
 
-// Load all routes
 async function loadRoutes() {
+  const btn = document.getElementById("planBtn");
+  btn.disabled = true;
+  btn.textContent = "Loading routes...";
+  
+  console.log("Starting to load routes...");
+  
   for (const routeId of routeFiles) {
     try {
-      const res = await fetch(`tracking/${routeId}.json`);
-      if (!res.ok) continue;
+      const res = await fetch(`tracking/forplanner/${routeId}.json`);
+      if (!res.ok) {
+        console.warn(`Failed to fetch ${routeId}.json - Status: ${res.status}`);
+        continue;
+      }
       const data = await res.json();
       routes.push(data);
 
@@ -99,38 +656,93 @@ async function loadRoutes() {
           if (!allStops.includes(s.name)) allStops.push(s.name);
         });
       });
-    } catch (err) { console.warn(`Failed to load ${routeId}.json`, err); }
+    } catch (err) { 
+      console.warn(`Failed to load ${routeId}.json`, err); 
+    }
   }
 
+  allStops.sort();
+  console.log(`Loaded ${routes.length} routes with ${allStops.length} unique stops`);
+  console.log("Sample stops:", allStops.slice(0, 10));
+  
   autocomplete(document.getElementById("startStop"));
   autocomplete(document.getElementById("endStop"));
+  
+  btn.disabled = false;
+  btn.textContent = "Find Journeys";
 }
 
-// --- Autocomplete ---
 function autocomplete(input) {
+  let currentFocus = -1;
+  
   input.addEventListener("input", function() {
-    const val = this.value.toLowerCase();
+    const val = this.value.toLowerCase().trim();
     closeAllLists();
+    currentFocus = -1;
+    
     if (!val) return;
 
     const list = document.createElement("div");
     list.setAttribute("class", "autocomplete-items");
+    list.setAttribute("id", this.id + "-autocomplete-list");
     this.parentNode.appendChild(list);
 
     let count = 0;
-    allStops.forEach(stop => {
-      if (stop.toLowerCase().includes(val) && count < 10) {
-        const item = document.createElement("div");
-        item.innerHTML = `<strong>${stop.substr(0, val.length)}</strong>${stop.substr(val.length)}`;
-        item.addEventListener("click", () => {
-          input.value = stop;
-          closeAllLists();
-        });
-        list.appendChild(item);
-        count++;
-      }
+    const matches = allStops.filter(stop => stop.toLowerCase().includes(val));
+    console.log(`Matching stops:`, matches.slice(0, 5));
+    
+    matches.forEach(stop => {
+      if (count >= 10) return;
+      
+      const item = document.createElement("div");
+      const matchIndex = stop.toLowerCase().indexOf(val);
+      const beforeMatch = stop.substring(0, matchIndex);
+      const match = stop.substring(matchIndex, matchIndex + val.length);
+      const afterMatch = stop.substring(matchIndex + val.length);
+      
+      item.innerHTML = `${beforeMatch}<strong>${match}</strong>${afterMatch}`;
+      item.addEventListener("click", () => {
+        input.value = stop;
+        closeAllLists();
+      });
+      list.appendChild(item);
+      count++;
     });
   });
+
+  input.addEventListener("keydown", function(e) {
+    let list = document.getElementById(this.id + "-autocomplete-list");
+    if (list) list = list.getElementsByTagName("div");
+    
+    if (e.keyCode == 40) {
+      currentFocus++;
+      addActive(list);
+      e.preventDefault();
+    } else if (e.keyCode == 38) {
+      currentFocus--;
+      addActive(list);
+      e.preventDefault();
+    } else if (e.keyCode == 13) {
+      e.preventDefault();
+      if (currentFocus > -1 && list) list[currentFocus].click();
+    }
+  });
+
+  function addActive(list) {
+    if (!list) return;
+    removeActive(list);
+    if (currentFocus >= list.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = list.length - 1;
+    list[currentFocus].style.backgroundColor = "#ADEACF";
+    list[currentFocus].style.color = "#141414";
+  }
+
+  function removeActive(list) {
+    for (let i = 0; i < list.length; i++) {
+      list[i].style.backgroundColor = "";
+      list[i].style.color = "";
+    }
+  }
 
   function closeAllLists() {
     const items = document.querySelectorAll(".autocomplete-items");
@@ -142,30 +754,41 @@ function autocomplete(input) {
   });
 }
 
-// --- Time helpers ---
-function addMinutes(time, minsToAdd) {
-  let [h, m] = time.split(":").map(Number);
-  m += minsToAdd;
-  h += Math.floor(m / 60);
-  m %= 60;
-  h %= 24;
+function timeToMinutes(time) {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function minutesToTime(minutes) {
+  const h = Math.floor(minutes / 60) % 24;
+  const m = minutes % 60;
   return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
 }
 
-// Estimate stop times using route length
+function addMinutes(time, minsToAdd) {
+  return minutesToTime(timeToMinutes(time) + minsToAdd);
+}
+
+function compareTime(time1, time2) {
+  return timeToMinutes(time1) - timeToMinutes(time2);
+}
+
 function getEstimatedStopTimes(routeData, dir, departure) {
   const stops = dir.stops.map(s => s.name);
-  const minutesPerStop = routeData.route.length / (stops.length - 1);
-  const stopTimes = stops.map((stop, index) => ({
+  const totalMinutes = routeData.route.length || 30;
+  const minutesPerStop = totalMinutes / Math.max(stops.length - 1, 1);
+  
+  return stops.map((stop, index) => ({
     stop,
     time: addMinutes(departure, Math.round(minutesPerStop * index))
   }));
-  return stopTimes;
 }
 
-// --- Journey Finder ---
 function findJourneys(start, end, afterTime) {
   const journeys = [];
+  const maxJourneys = 50; // Increased to get more options
+
+  console.log(`Finding journeys from "${start}" to "${end}" after ${afterTime || 'any time'}`);
 
   // 1️⃣ Direct journeys
   routes.forEach(routeData => {
@@ -173,51 +796,82 @@ function findJourneys(start, end, afterTime) {
       const stops = dir.stops.map(s => s.name);
       const sIndex = stops.indexOf(start);
       const eIndex = stops.indexOf(end);
+      
       if (sIndex !== -1 && eIndex !== -1 && sIndex < eIndex) {
         dir.departures.forEach(dep => {
-          if (!afterTime || dep >= afterTime) {
+          if (!afterTime || compareTime(dep, afterTime) >= 0) {
             const stopTimes = getEstimatedStopTimes(routeData, dir, dep);
-            journeys.push([{
-              route: routeData.route,
-              direction: dir.name,
-              departure: dep,
-              stops: stopTimes.slice(sIndex, eIndex + 1).map(x => x.stop),
-              times: stopTimes.slice(sIndex, eIndex + 1).map(x => x.time)
-            }]);
+            journeys.push({
+              legs: [{
+                route: routeData.route,
+                direction: dir.name,
+                departure: dep,
+                stops: stopTimes.slice(sIndex, eIndex + 1).map(x => x.stop),
+                times: stopTimes.slice(sIndex, eIndex + 1).map(x => x.time)
+              }],
+              startTime: stopTimes[sIndex].time,
+              endTime: stopTimes[eIndex].time,
+              transfers: 0
+            });
           }
         });
       }
     });
   });
 
+  console.log(`Found ${journeys.length} direct journeys`);
+
   // 2️⃣ Single-transfer journeys
-  allStops.forEach(intermediate => {
-    if (intermediate === start || intermediate === end) return;
+  const transferCount = {};
+  
+  routes.forEach(firstRoute => {
+    firstRoute.directions.forEach(firstDir => {
+      const firstStops = firstDir.stops.map(s => s.name);
+      const sIndex = firstStops.indexOf(start);
+      if (sIndex === -1) return;
 
-    routes.forEach(firstRoute => {
-      firstRoute.directions.forEach(firstDir => {
-        const firstStops = firstDir.stops.map(s => s.name);
-        const sIndex = firstStops.indexOf(start);
-        const iIndex = firstStops.indexOf(intermediate);
-        if (sIndex === -1 || iIndex === -1 || sIndex >= iIndex) return;
+      // For each stop after the start on this route
+      for (let iIndex = sIndex + 1; iIndex < firstStops.length; iIndex++) {
+        const intermediate = firstStops[iIndex];
+        if (intermediate === end) continue;
 
-        const firstDepartures = firstDir.departures.filter(d => !afterTime || d >= afterTime);
+        const firstDepartures = firstDir.departures
+          .filter(d => !afterTime || compareTime(d, afterTime) >= 0)
+          .slice(0, 5); // Check up to 5 departures
 
-        routes.forEach(secondRoute => {
-          secondRoute.directions.forEach(secondDir => {
-            const secondStops = secondDir.stops.map(s => s.name);
-            const i2Index = secondStops.indexOf(intermediate);
-            const eIndex = secondStops.indexOf(end);
-            if (i2Index === -1 || eIndex === -1 || i2Index >= eIndex) return;
+        firstDepartures.forEach(dep1 => {
+          if (journeys.length >= maxJourneys) return;
+          
+          const firstStopTimes = getEstimatedStopTimes(firstRoute, firstDir, dep1);
+          const arrivalAtIntermediate = firstStopTimes[iIndex].time;
 
-            firstDepartures.forEach(dep1 => {
-              const firstStopTimes = getEstimatedStopTimes(firstRoute, firstDir, dep1);
-              const arrival1 = firstStopTimes[iIndex].time;
+          // Look for second leg from intermediate to end
+          routes.forEach(secondRoute => {
+            secondRoute.directions.forEach(secondDir => {
+              const secondStops = secondDir.stops.map(s => s.name);
+              const i2Index = secondStops.indexOf(intermediate);
+              const eIndex = secondStops.indexOf(end);
+              
+              if (i2Index === -1 || eIndex === -1 || i2Index >= eIndex) return;
 
-              secondDir.departures.forEach(dep2 => {
+              // Find valid connecting departures (with at least 2 min transfer time)
+              const minTransferTime = addMinutes(arrivalAtIntermediate, 2);
+              const validSecondDeps = secondDir.departures
+                .filter(dep2 => compareTime(dep2, minTransferTime) >= 0)
+                .slice(0, 3);
+
+              validSecondDeps.forEach(dep2 => {
+                if (journeys.length >= maxJourneys) return;
+                
                 const secondStopTimes = getEstimatedStopTimes(secondRoute, secondDir, dep2);
-                if (secondStopTimes[i2Index].time >= arrival1) {
-                  journeys.push([
+                
+                // Track transfers to avoid duplicates
+                const key = `${dep1}-${intermediate}-${dep2}`;
+                if (transferCount[key]) return;
+                transferCount[key] = true;
+                
+                journeys.push({
+                  legs: [
                     {
                       route: firstRoute.route,
                       direction: firstDir.name,
@@ -232,65 +886,146 @@ function findJourneys(start, end, afterTime) {
                       stops: secondStopTimes.slice(i2Index, eIndex + 1).map(x => x.stop),
                       times: secondStopTimes.slice(i2Index, eIndex + 1).map(x => x.time)
                     }
-                  ]);
-                }
+                  ],
+                  startTime: firstStopTimes[sIndex].time,
+                  endTime: secondStopTimes[eIndex].time,
+                  transfers: 1,
+                  transferStop: intermediate,
+                  waitTime: compareTime(dep2, arrivalAtIntermediate)
+                });
               });
             });
           });
         });
-      });
+      }
     });
   });
 
+  console.log(`Found ${journeys.length - journeys.filter(j => j.transfers === 0).length} transfer journeys`);
+  console.log(`Total: ${journeys.length} journeys`);
+
+  // Sort by start time, then by number of transfers, then by total journey time
+  journeys.sort((a, b) => {
+    const timeCompare = compareTime(a.startTime, b.startTime);
+    if (timeCompare !== 0) return timeCompare;
+    if (a.transfers !== b.transfers) return a.transfers - b.transfers;
+    return compareTime(a.endTime, b.endTime) - compareTime(a.startTime, b.startTime);
+  });
+  
   return journeys;
 }
 
-// --- Display results ---
 function displayResults(journeys) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
   if (!journeys.length) {
-    container.innerHTML = "<p>No journeys found.</p>";
+    container.innerHTML = '<div class="no-results"><p>No journeys found between these stops.</p><p>Try different stops or a different time.</p></div>';
     return;
   }
 
-  // Only show the next 2 journeys
-  const nextJourneys = journeys.slice(0, 2);
+  const nextJourneys = journeys.slice(0, 3);
 
-  nextJourneys.forEach(journey => {
+  nextJourneys.forEach((journey, idx) => {
     const jDiv = document.createElement("div");
     jDiv.className = "journey";
+    
+    const duration = timeToMinutes(journey.endTime) - timeToMinutes(journey.startTime);
+    const header = document.createElement("div");
+    header.className = "journey-header";
+    header.textContent = `Journey ${idx + 1}: Depart ${journey.startTime} → Arrive ${journey.endTime} (${duration} mins, ${journey.transfers} transfer${journey.transfers !== 1 ? 's' : ''})`;
+    jDiv.appendChild(header);
 
-    journey.forEach(leg => {
+    journey.legs.forEach((leg, legIdx) => {
       const legDiv = document.createElement("div");
       legDiv.className = "leg";
-      legDiv.style.borderLeftColor = leg.route.color || "#2b7cae";
+      legDiv.style.borderLeftColor = leg.route.color || "#42B38A";
+      
+      const routeName = leg.route.name || leg.route.id || "Unknown";
       legDiv.innerHTML = `
-        <strong>${leg.route.name} (${leg.direction})</strong>
-        <span>Departure: ${leg.times[0]}</span>
-        <span>Stops: ${leg.stops.map((s,i) => s + " (" + leg.times[i] + ")").join(" → ")}</span>
+        <strong>Route ${routeName} - ${leg.direction}</strong>
+        <span>🚌 Board at: ${leg.stops[0]} (${leg.times[0]})</span>
+        <span>🏁 Alight at: ${leg.stops[leg.stops.length - 1]} (${leg.times[leg.times.length - 1]})</span>
+        <span style="color: #6b7280; font-size: 0.9rem;">${leg.stops.length} stops</span>
       `;
       jDiv.appendChild(legDiv);
+      
+      if (legIdx < journey.legs.length - 1) {
+        const transfer = document.createElement("div");
+        transfer.className = "transfer";
+        transfer.textContent = `🔄 Transfer at ${journey.transferStop}`;
+        jDiv.appendChild(transfer);
+      }
     });
 
     container.appendChild(jDiv);
   });
 }
 
-// --- Button event ---
-document.getElementById("planBtn").addEventListener("click", () => {
+document.getElementById("plannerForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  
   const start = document.getElementById("startStop").value.trim();
   const end = document.getElementById("endStop").value.trim();
   const time = document.getElementById("time").value;
 
-  if (!start || !end) return alert("Please enter both start and end stops.");
+  if (!start || !end) {
+    document.getElementById("results").innerHTML = '<div class="error">Please enter both start and end stops.</div>';
+    return;
+  }
 
-  const journeys = findJourneys(start, end, time);
-  displayResults(journeys);
+  if (!allStops.includes(start)) {
+    document.getElementById("results").innerHTML = '<div class="error">Start stop not found in the system.</div>';
+    return;
+  }
+
+  if (!allStops.includes(end)) {
+    document.getElementById("results").innerHTML = '<div class="error">End stop not found in the system.</div>';
+    return;
+  }
+
+  if (start === end) {
+    document.getElementById("results").innerHTML = '<div class="error">Start and end stops must be different.</div>';
+    return;
+  }
+
+  document.getElementById("results").innerHTML = '<div class="loading">Finding journeys...</div>';
+
+  setTimeout(() => {
+    const journeys = findJourneys(start, end, time);
+    console.log(`Found ${journeys.length} journeys, calling displayResults...`);
+    displayResults(journeys);
+    console.log('displayResults completed');
+  }, 100);
 });
 
-loadRoutes();
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("DOM loaded, initializing journey planner...");
+  loadRoutes();
+  
+  // Page load animation
+  document.body.style.opacity = '1';
+});
+
+document.body.style.opacity = '0';
+document.body.style.transition = 'opacity 0.3s ease';
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      navMenu.classList.remove('active');
+      mobileMenuBtn.textContent = '☰';
+    }
+  });
+});
 </script>
 </body>
 </html>
