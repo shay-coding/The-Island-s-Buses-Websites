@@ -11,18 +11,28 @@
 
     <style>
         :root {
-            --yellow: #FFDF00;
-            --purple: #BC14FE;
+            --yellow: #ADEACF;
+            --purple: #42B38A;
+        }
+        
+        @font-face {
+            font-family: 'Abadi';
+            src: url('abadi-mt-std.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Abadi', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--purple);
             background-color: var(--yellow);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
         }
         header {
             background-color: var(--purple);
